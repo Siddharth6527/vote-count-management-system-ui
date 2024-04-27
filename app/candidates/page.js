@@ -264,10 +264,7 @@ export default function Candidates() {
           </Button>
           <Button
             onClick={async () => {
-              const candidateId = deleteDialogCandidate.candidateId;
               setDeleteDialogCandidate(null);
-              await deleteCandidate(candidateId);
-              await fetchCandidates();
             }}
             autoFocus
           >
