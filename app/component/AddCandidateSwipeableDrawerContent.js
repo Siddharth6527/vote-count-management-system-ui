@@ -94,7 +94,7 @@ export default function AddCandidateSwipeableDrawerContent({ close }) {
           label="Candidate Name"
           placeholder="Candidate Name"
         />
-        <Box sx={{ height: 8 }} />
+        <Box sx={{ height: 16 }} />
         <TextField
           onChange={(e) => setCandidateParty(e.target.value)}
           error={partyError}
@@ -103,7 +103,7 @@ export default function AddCandidateSwipeableDrawerContent({ close }) {
           label="Candidate Party"
           placeholder="Candidate Party"
         />
-        <Box sx={{ height: 8 }} />
+        <Box sx={{ height: 16 }} />
         <TextField
           onChange={(e) => setCandidateAddress(e.target.value)}
           error={addressError}

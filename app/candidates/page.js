@@ -141,7 +141,7 @@ export default function Candidates() {
             whiteSpace: "nowrap",
             overflow: "inherit",
           }}
-          severity="info"
+          severity="warning"
         >
           Newly added candidates will have zero votes in existing rounds.
         </Alert>
@@ -165,6 +165,7 @@ export default function Candidates() {
         </IconButton>
       </Box>
       <br />
+
       {loading ? (
         <Box
           sx={{
@@ -248,6 +249,23 @@ export default function Candidates() {
           </Table>
         </TableContainer>
       ) : null}
+      {candidates?.length == 0 && !loading ? (
+        <Box
+          sx={{
+            flex: 1,
+            width: "100%",
+            flexDirection: "row",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {" "}
+          <Typography variant="body2" component="div">
+            No candidates found.
+          </Typography>
+        </Box>
+      ) : null}
       <Snackbar
         open={errorSnackbarOpen}
         autoHideDuration={10000}
@@ -260,9 +278,7 @@ export default function Candidates() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {`Delete ${deleteDialogCandidate?.candidateName ?? ""} ?`}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">Delete ?</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Candidate with following details will be deleted:
