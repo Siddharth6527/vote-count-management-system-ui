@@ -32,24 +32,47 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { ListItemIcon } from "@mui/material";
+import {
+  SetCredentialsContext,
+  _getCredentials,
+  _setCredentials,
+} from "./utils/auth";
 
 const drawerWidth = 300;
-const primaryNavItems = [
+const primaryNavItems = [{ name: "Results", link: "/" }];
+const secondaryNavItems = [{ name: "Login", link: "/login" }];
+const primaryNavItemsAuth = [
   { name: "Results", link: "/" },
   { name: "Candidates", link: "/candidates" },
   { name: "Rounds", link: "/rounds" },
 ];
-const secondaryNavItems = [
-  { name: "Login", link: "/login" },
-  { name: "Logout", link: "/logout" },
-];
+const secondaryNavItemsAuth = [{ name: "Logout", link: "/logout" }];
 
 export default function RootLayout({ children }) {
+  const [credentials, __setCredentials] = useState(_getCredentials());
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  // --------------------------------------------------
+
+  const setCredentials = ({ user, password }) => {
+    _setCredentials({ user, password });
+    __setCredentials({ user, password });
+  };
+
+  const clearCredentials = () => {
+    _setCredentials({ user: "", password: "" });
+    __setCredentials({ user: "", password: "" });
+  };
+
+  const getCredentials = () => credentials;
+
+  const hasCredentials = () => credentials.user && credentials.password;
+
+  // --------------------------------------------------
 
   const drawer = (
     <Box
@@ -61,7 +84,7 @@ export default function RootLayout({ children }) {
         Vote Count Management
       </Typography>
       <Divider />
-      {primaryNavItems.map((e) => (
+      {(hasCredentials() ? primaryNavItemsAuth : primaryNavItems).map((e) => (
         <Link key={e.link} href={e.link} passHref legacyBehavior>
           <ListItem disablePadding>
             <ListItemButton>
@@ -81,23 +104,25 @@ export default function RootLayout({ children }) {
       ))}
       <Box sx={{ flexGrow: 1 }} />
       <Divider />
-      {secondaryNavItems.map((e) => (
-        <Link key={e.link} href={e.link} passHref legacyBehavior>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {
+      {(hasCredentials() ? secondaryNavItemsAuth : secondaryNavItems).map(
+        (e) => (
+          <Link key={e.link} href={e.link} passHref legacyBehavior>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
                   {
-                    "/login": <LoginOutlined />,
-                    "/logout": <LogoutOutlined />,
-                  }[e.link]
-                }
-              </ListItemIcon>
-              <ListItemText sx={{ textDecoration: "" }} primary={e.name} />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-      ))}
+                    {
+                      "/login": <LoginOutlined />,
+                      "/logout": <LogoutOutlined />,
+                    }[e.link]
+                  }
+                </ListItemIcon>
+                <ListItemText sx={{ textDecoration: "" }} primary={e.name} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        )
+      )}
     </Box>
   );
 
@@ -106,93 +131,120 @@ export default function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100vw",
-            height: "100vh",
+        <SetCredentialsContext.Provider
+          value={{
+            setCredentials,
+            clearCredentials,
+            getCredentials,
+            hasCredentials,
           }}
         >
-          <Box>
-            <CssBaseline />
-            <AppBar component="nav">
-              <Toolbar>
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  edge="start"
-                  onClick={handleDrawerToggle}
-                  sx={{ mr: 2, display: { md: "none" } }}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100vw",
+              height: "100vh",
+            }}
+          >
+            <Box>
+              <CssBaseline />
+              <AppBar component="nav">
+                <Toolbar>
+                  <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={handleDrawerToggle}
+                    sx={{ mr: 2, display: { md: "none" } }}
+                  >
+                    <Menu />
+                  </IconButton>
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ paddingRight: "56px" }}
+                  >
+                    Vote Count Management
+                  </Typography>
+                  <Box sx={{ display: { xs: "none", md: "block" } }}>
+                    {(hasCredentials()
+                      ? primaryNavItemsAuth
+                      : primaryNavItems
+                    ).map((e) => (
+                      <Link key={e.link} href={e.link} passHref>
+                        <Button
+                          startIcon={
+                            {
+                              "/": <AssessmentOutlined />,
+                              "/candidates": <PersonOutlined />,
+                              "/rounds": <ScheduleOutlined />,
+                            }[e.link]
+                          }
+                          sx={{ color: "#fff", marginRight: "16px" }}
+                        >
+                          {e.name}
+                        </Button>
+                      </Link>
+                    ))}
+                  </Box>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <Box sx={{ display: { xs: "none", md: "block" } }}>
+                    {(hasCredentials()
+                      ? secondaryNavItemsAuth
+                      : secondaryNavItems
+                    ).map((e) => (
+                      <Link key={e.link} href={e.link} passHref>
+                        <Button
+                          startIcon={
+                            {
+                              "/login": <LoginOutlined />,
+                              "/logout": <LogoutOutlined />,
+                            }[e.link]
+                          }
+                          sx={{ color: "#fff", marginRight: "16px" }}
+                        >
+                          {e.name}
+                        </Button>
+                      </Link>
+                    ))}
+                  </Box>
+                </Toolbar>
+              </AppBar>
+              <nav>
+                <Drawer
+                  container={container}
+                  variant="temporary"
+                  open={mobileOpen}
+                  onClose={handleDrawerToggle}
+                  ModalProps={{ keepMounted: true }}
+                  sx={{
+                    display: { xs: "block", md: "none" },
+                    "& .MuiDrawer-paper": {
+                      boxSizing: "border-box",
+                      width: drawerWidth,
+                    },
+                  }}
                 >
-                  <Menu />
-                </IconButton>
-                <Typography
-                  variant="h6"
-                  component="div"
-                  sx={{ paddingRight: "56px" }}
-                >
-                  Vote Count Management
-                </Typography>
-                <Box sx={{ display: { xs: "none", md: "block" } }}>
-                  {primaryNavItems.map((e) => (
-                    <Link key={e.link} href={e.link} passHref>
-                      <Button
-                        startIcon={
-                          {
-                            "/": <AssessmentOutlined />,
-                            "/candidates": <PersonOutlined />,
-                            "/rounds": <ScheduleOutlined />,
-                          }[e.link]
-                        }
-                        sx={{ color: "#fff", marginRight: "16px" }}
-                      >
-                        {e.name}
-                      </Button>
-                    </Link>
-                  ))}
-                </Box>
-                <Box sx={{ flexGrow: 1 }} />
-                <Box sx={{ display: { xs: "none", md: "block" } }}>
-                  {secondaryNavItems.map((e) => (
-                    <Link key={e.link} href={e.link} passHref>
-                      <Button
-                        startIcon={
-                          {
-                            "/login": <LoginOutlined />,
-                            "/logout": <LogoutOutlined />,
-                          }[e.link]
-                        }
-                        sx={{ color: "#fff", marginRight: "16px" }}
-                      >
-                        {e.name}
-                      </Button>
-                    </Link>
-                  ))}
-                </Box>
-              </Toolbar>
-            </AppBar>
-            <nav>
-              <Drawer
-                container={container}
-                variant="temporary"
-                open={mobileOpen}
-                onClose={handleDrawerToggle}
-                ModalProps={{ keepMounted: true }}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                  "& .MuiDrawer-paper": {
-                    boxSizing: "border-box",
-                    width: drawerWidth,
-                  },
-                }}
-              >
-                {drawer}
-              </Drawer>
-            </nav>
+                  {drawer}
+                </Drawer>
+              </nav>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flex: 1,
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
+              <Toolbar />
+              {children}
+            </Box>
           </Box>
-          <Box sx={{ flex: 1, width: "100%" }}>{children}</Box>
-        </Box>
+        </SetCredentialsContext.Provider>
       </body>
     </html>
   );
