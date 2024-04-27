@@ -6,11 +6,12 @@ import { SetCredentialsContext } from "../utils/auth";
 
 export default function Logout() {
   const router = useRouter();
-  const { clearCredentials } = useContext(SetCredentialsContext);
+  const { hasCredentials } = useContext(SetCredentialsContext);
 
   useEffect(() => {
-    clearCredentials();
-    router.replace("/login");
+    if (!hasCredentials()) {
+      router.replace("/");
+    }
   }, []);
 
   return <></>;

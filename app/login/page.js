@@ -20,8 +20,7 @@ import { SetCredentialsContext } from "../utils/auth";
 
 export default function Login() {
   const router = useRouter();
-  const { setCredentials, clearCredentials, getCredentials, hasCredentials } =
-    useContext(SetCredentialsContext);
+  const { setCredentials, hasCredentials } = useContext(SetCredentialsContext);
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
