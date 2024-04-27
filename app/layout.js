@@ -126,7 +126,7 @@ export default function RootLayout({ children }) {
     </Box>
   );
 
-  const container = window.document.body;
+  const container = typeof window == "undefined" ? null : window.document.body;
 
   return (
     <html>
