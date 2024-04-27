@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-export const SetCredentialsContext = createContext();
+export const CredentialsContext = createContext();
 
 export function _setCredentials({ user, password }) {
   if (typeof window !== "undefined") {

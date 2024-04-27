@@ -1,40 +1,46 @@
 "use client";
 
+import { Delete, Refresh } from "@mui/icons-material";
 import {
   Alert,
   Box,
   Button,
-  Typography,
-  Snackbar,
+  CircularProgress,
   IconButton,
-  TableContainer,
+  Snackbar,
+  SwipeableDrawer,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
-  CircularProgress,
+  Typography,
 } from "@mui/material";
-import Paper from "@mui/material/Paper";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Paper from "@mui/material/Paper";
+import AddCandidateSwipeableDrawerContent from "../component/AddCandidateSwipeableDrawerContent";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import { SetCredentialsContext } from "../utils/auth";
-import { API_CANDIDATES_URL, API_CANDIDATE_DELETE_URL } from "../utils/api";
-import { Delete, Refresh } from "@mui/icons-material";
 import CandidateImage from "../component/CandidateImage";
+import { API_CANDIDATES_URL, API_CANDIDATE_DELETE_URL } from "../utils/api";
+import { CredentialsContext } from "../utils/auth";
 
 export default function Candidates() {
   const router = useRouter();
   const [deleteDialogCandidate, setDeleteDialogCandidate] = useState(null);
   const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
+  const [
+    addNewCandidateSwipableDrawerOpen,
+    setAddNewCandidateSwipableDrawerOpen,
+  ] = useState(false);
   const [candidates, setCandidates] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { hasCredentials, getCredentials } = useContext(SetCredentialsContext);
+  const { hasCredentials, getCredentials } = useContext(CredentialsContext);
 
   const fetchCandidates = async () => {
     if (loading) {
@@ -117,13 +123,30 @@ export default function Candidates() {
         alignItems: "flex-start",
       }}
     >
-      <Button variant="contained" onClick={() => {}}>
+      <Button
+        variant="contained"
+        onClick={() => setAddNewCandidateSwipableDrawerOpen(true)}
+      >
         Add New Candidate
       </Button>
       <br />
-      <Alert sx={{ whiteSpace: "nowrap" }} severity="info">
-        Newly added candidates will have zero votes in existing rounds.
-      </Alert>
+      <Box
+        sx={{
+          width: "100%",
+          // overflowX: "scroll",
+        }}
+      >
+        <Alert
+          sx={{
+            whiteSpace: "nowrap",
+            overflow: "inherit",
+          }}
+          severity="info"
+        >
+          Newly added candidates will have zero votes in existing rounds.
+        </Alert>
+      </Box>
+
       <br />
       <Box
         sx={{
@@ -272,6 +295,19 @@ export default function Candidates() {
           </Button>
         </DialogActions>
       </Dialog>
+      <SwipeableDrawer
+        anchor={"bottom"}
+        open={addNewCandidateSwipableDrawerOpen}
+        onClose={() => setAddNewCandidateSwipableDrawerOpen(false)}
+      >
+        <AddCandidateSwipeableDrawerContent
+          key={addNewCandidateSwipableDrawerOpen}
+          close={() => {
+            setAddNewCandidateSwipableDrawerOpen(false);
+            fetchCandidates();
+          }}
+        />
+      </SwipeableDrawer>
     </Box>
   );
 }

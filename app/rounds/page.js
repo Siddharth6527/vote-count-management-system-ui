@@ -2,11 +2,11 @@
 
 import { useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
-import { SetCredentialsContext } from "../utils/auth";
+import { CredentialsContext } from "../utils/auth";
 
 export default function Rounds() {
   const router = useRouter();
-  const { hasCredentials } = useContext(SetCredentialsContext);
+  const { hasCredentials } = useContext(CredentialsContext);
 
   useEffect(() => {
     if (!hasCredentials()) {

@@ -33,7 +33,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { ListItemIcon } from "@mui/material";
 import {
-  SetCredentialsContext,
+  CredentialsContext,
   _getCredentials,
   _setCredentials,
 } from "./utils/auth";
@@ -131,7 +131,7 @@ export default function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <SetCredentialsContext.Provider
+        <CredentialsContext.Provider
           value={{
             setCredentials,
             clearCredentials,
@@ -244,7 +244,7 @@ export default function RootLayout({ children }) {
               {children}
             </Box>
           </Box>
-        </SetCredentialsContext.Provider>
+        </CredentialsContext.Provider>
       </body>
     </html>
   );

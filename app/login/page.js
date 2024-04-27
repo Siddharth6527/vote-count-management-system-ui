@@ -16,11 +16,11 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { API_CANDIDATES_URL } from "../utils/api";
-import { SetCredentialsContext } from "../utils/auth";
+import { CredentialsContext } from "../utils/auth";
 
 export default function Login() {
   const router = useRouter();
-  const { setCredentials, hasCredentials } = useContext(SetCredentialsContext);
+  const { setCredentials, hasCredentials } = useContext(CredentialsContext);
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
