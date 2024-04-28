@@ -5,6 +5,7 @@ import {
   Alert,
   Box,
   Button,
+  Card,
   CircularProgress,
   IconButton,
   Snackbar,
@@ -123,31 +124,24 @@ export default function Candidates() {
         alignItems: "flex-start",
       }}
     >
+      <Box sx={{ height: 8 }} />
       <Button
         variant="contained"
         onClick={() => setAddNewCandidateSwipableDrawerOpen(true)}
       >
         Add New Candidate
       </Button>
-      <br />
-      <Box
+      <Box sx={{ height: 16 }} />
+      <Alert
         sx={{
-          width: "100%",
-          // overflowX: "scroll",
+          whiteSpace: "nowrap",
+          overflow: "inherit",
         }}
+        severity="warning"
       >
-        <Alert
-          sx={{
-            whiteSpace: "nowrap",
-            overflow: "inherit",
-          }}
-          severity="warning"
-        >
-          Newly added candidates will have zero votes in existing rounds.
-        </Alert>
-      </Box>
-
-      <br />
+        Newly added candidates will have zero votes in existing rounds.
+      </Alert>
+      <Box sx={{ height: 16 }} />
       <Box
         sx={{
           display: "flex",
@@ -164,8 +158,7 @@ export default function Candidates() {
           <Refresh />
         </IconButton>
       </Box>
-      <br />
-
+      <Box sx={{ height: 16 }} />
       {loading ? (
         <Box
           sx={{
@@ -180,74 +173,85 @@ export default function Candidates() {
           <CircularProgress sx={{ width: "100%" }} />
         </Box>
       ) : null}
-      {candidates != null && !loading ? (
-        <TableContainer elevation={2} component={Paper}>
-          <Table
-            sx={{ minWidth: 800, whiteSpace: "nowrap" }}
-            aria-label="simple table"
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell align="center" size="small">
-                  S. No.
-                </TableCell>
-                <TableCell align="center">Candidate Image</TableCell>
-                <TableCell>Candidate Name</TableCell>
-                <TableCell>Candidate Party</TableCell>
-                <TableCell>Candidate Address</TableCell>
-                <TableCell align="center" size="small">
-                  &nbsp;
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {(() => {
-                try {
-                  return candidates.map((candidate, i) => {
-                    return (
-                      <TableRow
-                        key={candidate.candidateId}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell align="center" size="small">
-                          {i + 1}
-                        </TableCell>
-                        <TableCell align="center">
-                          <Box
-                            sx={{
-                              height: "36px",
-                            }}
-                          >
-                            <CandidateImage
-                              id={candidate.candidateId}
-                              height={36}
-                            />
-                          </Box>
-                        </TableCell>
-                        <TableCell>{candidate.candidateName}</TableCell>
-                        <TableCell>{candidate.candidateParty}</TableCell>
-                        <TableCell>{candidate.candidateAddress}</TableCell>
-                        <TableCell align="center" size="small">
-                          <IconButton
-                            onClick={() => {
-                              setDeleteDialogCandidate(candidate);
-                            }}
-                          >
-                            <Delete />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  });
-                } catch (e) {
-                  return null;
-                }
-              })()}
-            </TableBody>
-          </Table>
-        </TableContainer>
+      {candidates != null && !loading && candidates?.length > 0 ? (
+        <Card
+          sx={{
+            width: {
+              md: "100%",
+            },
+            overflow: {
+              xs: "visible",
+              md: "100%",
+            },
+            whiteSpace: "nowrap",
+          }}
+          elevation={2}
+        >
+          <TableContainer>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center" size="small">
+                    S. No.
+                  </TableCell>
+                  <TableCell align="center">Candidate Image</TableCell>
+                  <TableCell>Candidate Name</TableCell>
+                  <TableCell>Candidate Party</TableCell>
+                  <TableCell>Candidate Address</TableCell>
+                  <TableCell align="center" size="small">
+                    &nbsp;
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {(() => {
+                  try {
+                    return candidates.map((candidate, i) => {
+                      return (
+                        <TableRow
+                          key={candidate.candidateId}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell align="center" size="small">
+                            {i + 1}
+                          </TableCell>
+                          <TableCell align="center">
+                            <Box
+                              sx={{
+                                height: "36px",
+                              }}
+                            >
+                              <CandidateImage
+                                id={candidate.candidateId}
+                                height={36}
+                              />
+                            </Box>
+                          </TableCell>
+                          <TableCell>{candidate.candidateName}</TableCell>
+                          <TableCell>{candidate.candidateParty}</TableCell>
+                          <TableCell>{candidate.candidateAddress}</TableCell>
+                          <TableCell align="center" size="small">
+                            <IconButton
+                              onClick={() => {
+                                setDeleteDialogCandidate(candidate);
+                              }}
+                            >
+                              <Delete />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    });
+                  } catch (e) {
+                    return null;
+                  }
+                })()}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
       ) : null}
       {candidates?.length == 0 && !loading ? (
         <Box

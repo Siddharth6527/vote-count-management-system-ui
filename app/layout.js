@@ -23,6 +23,8 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import "./globals.css";
 
 import Link from "next/link";
@@ -37,6 +39,17 @@ import {
   _getCredentials,
   _setCredentials,
 } from "./utils/auth";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#ff5733",
+      light: "#ff5733",
+      dark: "#ff5733",
+      contrastText: "#fff",
+    },
+  },
+});
 
 const drawerWidth = 300;
 const primaryNavItems = [{ name: "Results", link: "/" }];
@@ -131,120 +144,122 @@ export default function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <CredentialsContext.Provider
-          value={{
-            setCredentials,
-            clearCredentials,
-            getCredentials,
-            hasCredentials,
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100vw",
-              height: "100vh",
+        <ThemeProvider theme={theme}>
+          <CredentialsContext.Provider
+            value={{
+              setCredentials,
+              clearCredentials,
+              getCredentials,
+              hasCredentials,
             }}
           >
-            <Box>
-              <CssBaseline />
-              <AppBar component="nav">
-                <Toolbar>
-                  <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="start"
-                    onClick={handleDrawerToggle}
-                    sx={{ mr: 2, display: { md: "none" } }}
-                  >
-                    <Menu />
-                  </IconButton>
-                  <Typography
-                    variant="h6"
-                    component="div"
-                    sx={{ paddingRight: "56px" }}
-                  >
-                    Vote Count Management
-                  </Typography>
-                  <Box sx={{ display: { xs: "none", md: "block" } }}>
-                    {(hasCredentials()
-                      ? primaryNavItemsAuth
-                      : primaryNavItems
-                    ).map((e) => (
-                      <Link key={e.link} href={e.link} passHref>
-                        <Button
-                          startIcon={
-                            {
-                              "/": <AssessmentOutlined />,
-                              "/candidates": <PersonOutlined />,
-                              "/rounds": <ScheduleOutlined />,
-                            }[e.link]
-                          }
-                          sx={{ color: "#fff", marginRight: "16px" }}
-                        >
-                          {e.name}
-                        </Button>
-                      </Link>
-                    ))}
-                  </Box>
-                  <Box sx={{ flexGrow: 1 }} />
-                  <Box sx={{ display: { xs: "none", md: "block" } }}>
-                    {(hasCredentials()
-                      ? secondaryNavItemsAuth
-                      : secondaryNavItems
-                    ).map((e) => (
-                      <Link key={e.link} href={e.link} passHref>
-                        <Button
-                          startIcon={
-                            {
-                              "/login": <LoginOutlined />,
-                              "/logout": <LogoutOutlined />,
-                            }[e.link]
-                          }
-                          sx={{ color: "#fff", marginRight: "16px" }}
-                        >
-                          {e.name}
-                        </Button>
-                      </Link>
-                    ))}
-                  </Box>
-                </Toolbar>
-              </AppBar>
-              <nav>
-                <Drawer
-                  container={container}
-                  variant="temporary"
-                  open={mobileOpen}
-                  onClose={handleDrawerToggle}
-                  ModalProps={{ keepMounted: true }}
-                  sx={{
-                    display: { xs: "block", md: "none" },
-                    "& .MuiDrawer-paper": {
-                      boxSizing: "border-box",
-                      width: drawerWidth,
-                    },
-                  }}
-                >
-                  {drawer}
-                </Drawer>
-              </nav>
-            </Box>
             <Box
               sx={{
                 display: "flex",
-                flex: 1,
                 flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "100%",
+                width: "100vw",
+                height: "100vh",
               }}
             >
-              <Toolbar />
-              {children}
+              <Box>
+                <CssBaseline />
+                <AppBar component="nav">
+                  <Toolbar>
+                    <IconButton
+                      color="inherit"
+                      aria-label="open drawer"
+                      edge="start"
+                      onClick={handleDrawerToggle}
+                      sx={{ mr: 2, display: { md: "none" } }}
+                    >
+                      <Menu />
+                    </IconButton>
+                    <Typography
+                      variant="h6"
+                      component="div"
+                      sx={{ paddingRight: "56px" }}
+                    >
+                      Vote Count Management
+                    </Typography>
+                    <Box sx={{ display: { xs: "none", md: "block" } }}>
+                      {(hasCredentials()
+                        ? primaryNavItemsAuth
+                        : primaryNavItems
+                      ).map((e) => (
+                        <Link key={e.link} href={e.link} passHref>
+                          <Button
+                            startIcon={
+                              {
+                                "/": <AssessmentOutlined />,
+                                "/candidates": <PersonOutlined />,
+                                "/rounds": <ScheduleOutlined />,
+                              }[e.link]
+                            }
+                            sx={{ color: "#fff", marginRight: "16px" }}
+                          >
+                            {e.name}
+                          </Button>
+                        </Link>
+                      ))}
+                    </Box>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Box sx={{ display: { xs: "none", md: "block" } }}>
+                      {(hasCredentials()
+                        ? secondaryNavItemsAuth
+                        : secondaryNavItems
+                      ).map((e) => (
+                        <Link key={e.link} href={e.link} passHref>
+                          <Button
+                            startIcon={
+                              {
+                                "/login": <LoginOutlined />,
+                                "/logout": <LogoutOutlined />,
+                              }[e.link]
+                            }
+                            sx={{ color: "#fff", marginRight: "16px" }}
+                          >
+                            {e.name}
+                          </Button>
+                        </Link>
+                      ))}
+                    </Box>
+                  </Toolbar>
+                </AppBar>
+                <nav>
+                  <Drawer
+                    container={container}
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={handleDrawerToggle}
+                    ModalProps={{ keepMounted: true }}
+                    sx={{
+                      display: { xs: "block", md: "none" },
+                      "& .MuiDrawer-paper": {
+                        boxSizing: "border-box",
+                        width: drawerWidth,
+                      },
+                    }}
+                  >
+                    {drawer}
+                  </Drawer>
+                </nav>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flex: 1,
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
+                <Toolbar />
+                {children}
+              </Box>
             </Box>
-          </Box>
-        </CredentialsContext.Provider>
+          </CredentialsContext.Provider>
+        </ThemeProvider>
       </body>
     </html>
   );

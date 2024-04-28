@@ -1,13 +1,13 @@
-import { useState, useContext } from "react";
 import {
   Box,
-  TextField,
-  Typography,
   Button,
   LinearProgress,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { CredentialsContext } from "../utils/auth";
+import { useContext, useState } from "react";
 import { API_CANDIDATE_SAVE_URL } from "../utils/api";
+import { CredentialsContext } from "../utils/auth";
 
 export default function AddCandidateSwipeableDrawerContent({ close }) {
   const [loading, setLoading] = useState(false);
@@ -85,50 +85,47 @@ export default function AddCandidateSwipeableDrawerContent({ close }) {
         <Typography sx={{ maxWidth: "100%" }} variant="h6" component="div">
           Candidate Details
         </Typography>
-        <Box sx={{ height: 16 }} />
+        <Box sx={{ height: 20 }} />
         <TextField
           onChange={(e) => setCandidateName(e.target.value)}
           error={nameError}
           sx={{ maxWidth: "100%" }}
-          variant="outlined"
-          label="Candidate Name"
-          placeholder="Candidate Name"
+          variant="filled"
+          label="Name"
         />
         <Box sx={{ height: 16 }} />
         <TextField
           onChange={(e) => setCandidateParty(e.target.value)}
           error={partyError}
           sx={{ maxWidth: "100%" }}
-          variant="outlined"
-          label="Candidate Party"
-          placeholder="Candidate Party"
+          variant="filled"
+          label="Party"
         />
         <Box sx={{ height: 16 }} />
         <TextField
           onChange={(e) => setCandidateAddress(e.target.value)}
           error={addressError}
           sx={{ maxWidth: "100%" }}
-          variant="outlined"
-          label="Candidate Address"
-          placeholder="Candidate Address"
+          variant="filled"
+          label="Address"
         />
         <Box sx={{ height: 16 }} />
-        <Typography variant="subtitle1" component="div">
-          Candidate Image (Optional)
+        <Typography variant="subtitle2" component="div">
+          Image (Optional)
+          <Box sx={{ height: 16 }} />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const fileReader = new FileReader();
+              fileReader.readAsDataURL(e.target.files[0]);
+              fileReader.onload = () => {
+                console.log(fileReader.result);
+                setCandidateImage(fileReader.result);
+              };
+            }}
+          />
         </Typography>
-        <Box sx={{ height: 16 }} />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(e.target.files[0]);
-            fileReader.onload = () => {
-              console.log(fileReader.result);
-              setCandidateImage(fileReader.result);
-            };
-          }}
-        />
         <Box sx={{ height: 32 }} />
         <Button
           sx={{ maxWidth: "100%" }}
