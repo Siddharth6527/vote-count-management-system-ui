@@ -4,7 +4,11 @@ import React from "react";
 import { useEffect, useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CredentialsContext } from "../utils/auth";
-import { API_ROUNDS_URL, API_ROUNDS_DELETE_URL } from "../utils/api";
+import {
+  API_CANDIDATES_URL,
+  API_ROUNDS_URL,
+  API_ROUNDS_DELETE_URL,
+} from "../utils/api";
 import {
   Box,
   Button,
@@ -28,16 +32,46 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Refresh, Delete } from "@mui/icons-material";
 import CandidateImage from "../component/CandidateImage";
+import AddRoundDialog from "../component/AddRoundDialog";
 
 export default function Rounds() {
   const router = useRouter();
   const [deleteDialogRound, setDeleteDialogRound] = useState(null);
   const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
-  const [addNewRoundSwipableDrawerOpen, setAddNewRoundSwipableDrawerOpen] =
-    useState(false);
+  const [noCandidatesDialogOpen, setNoCandidatesDialogOpen] = useState(false);
+  const [addNewRoundDialogOpen, setAddNewRoundDialogOpen] = useState(false);
+  const [candidates, setCandidates] = useState(null);
+
   const [rounds, setRounds] = useState(null);
   const [loading, setLoading] = useState(false);
   const { hasCredentials, getCredentials } = useContext(CredentialsContext);
+
+  const fetchCandidates = async () => {
+    console.log("Fetching candidates...");
+
+    try {
+      const response = await fetch(API_CANDIDATES_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "Basic " +
+            btoa(getCredentials().user + ":" + getCredentials().password),
+        },
+      });
+      const data = await response.json();
+      if (response.status == 200) {
+        console.log(data);
+        setCandidates(data);
+      } else {
+        throw new Error();
+      }
+    } catch (e) {
+      console.log(e);
+      setErrorSnackbarOpen(true);
+      setTimeout(() => setErrorSnackbarOpen(false), 10000);
+    }
+  };
 
   const fetchRounds = async () => {
     if (loading) {
@@ -46,6 +80,8 @@ export default function Rounds() {
     setLoading(true);
 
     console.log("Fetching rounds...");
+
+    fetchCandidates();
 
     try {
       const response = await fetch(API_ROUNDS_URL, {
@@ -123,7 +159,13 @@ export default function Rounds() {
       <Box sx={{ height: 8 }} />
       <Button
         variant="contained"
-        onClick={() => setAddNewRoundSwipableDrawerOpen(true)}
+        onClick={() => {
+          if (candidates == null || candidates.length == 0) {
+            setNoCandidatesDialogOpen(true);
+            return;
+          }
+          setAddNewRoundDialogOpen(true);
+        }}
       >
         Add New Round
       </Button>
@@ -273,6 +315,31 @@ export default function Rounds() {
         message={"Refresh: Failure"}
       />
       <Dialog
+        open={noCandidatesDialogOpen}
+        onClose={() => setNoCandidatesDialogOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          No candidates available
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Please add candidates before adding rounds.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={async () => {
+              setNoCandidatesDialogOpen(false);
+            }}
+            autoFocus
+          >
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
         open={deleteDialogRound != null}
         onClose={() => setDeleteDialogRound(null)}
         aria-labelledby="alert-dialog-title"
@@ -310,6 +377,15 @@ export default function Rounds() {
           </Button>
         </DialogActions>
       </Dialog>
+      <AddRoundDialog
+        key={addNewRoundDialogOpen}
+        open={addNewRoundDialogOpen}
+        candidates={candidates}
+        onClose={() => {
+          setAddNewRoundDialogOpen(false);
+          fetchRounds();
+        }}
+      />
     </Box>
   );
 }

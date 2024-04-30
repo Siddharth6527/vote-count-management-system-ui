@@ -41,14 +41,14 @@ import {
 } from "./utils/auth";
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#ff5733",
-      light: "#ff5733",
-      dark: "#ff5733",
-      contrastText: "#fff",
-    },
-  },
+  // palette: {
+  //   primary: {
+  //     main: "#ff5733",
+  //     light: "#ff5733",
+  //     dark: "#ff5733",
+  //     contrastText: "#fff",
+  //   },
+  // },
 });
 
 const drawerWidth = 300;
