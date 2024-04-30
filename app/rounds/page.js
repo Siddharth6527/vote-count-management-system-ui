@@ -229,9 +229,10 @@ export default function Rounds() {
                   try {
                     return rounds.map((round) => {
                       return (
-                        <React.Fragment>
+                        <React.Fragment
+                          key={`${round.roundId}-${round.roundDistrict}`}
+                        >
                           <TableRow
-                            key={`${round.roundId}-${round.roundDistrict}`}
                             sx={{
                               "*": { border: "unset" },
                             }}

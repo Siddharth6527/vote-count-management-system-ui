@@ -185,12 +185,11 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
           candidates.length > 0 &&
           candidates.map((candidate) => {
             return (
-              <React.Fragment>
+              <React.Fragment key={candidate.candidateId}>
                 <TextField
                   sx={{ maxWidth: "100%" }}
                   variant="outlined"
                   label={`${candidate.candidateName} (${candidate.candidateParty})`}
-                  key={candidate.candidateId}
                   onChange={(e) => {
                     if (e.target.value == "") {
                       setCandidateVotes({

@@ -23,6 +23,8 @@ import {
 import CandidateImage from "./component/CandidateImage";
 import { API_ROUNDS_URL } from "./utils/api";
 
+import { BarChart } from "@mui/x-charts/BarChart";
+
 export default function Home() {
   const [sort, setSort] = useState("candidateId");
   const [order, setOrder] = useState("asc");
@@ -208,7 +210,10 @@ export default function Home() {
                             </TableCell>
                             {rounds.map((round) => {
                               return (
-                                <TableCell align="center">
+                                <TableCell
+                                  id={`${round.roundId}-${round.roundDistrict}`}
+                                  align="center"
+                                >
                                   {round.candidateVoteCounts.find(
                                     (c) =>
                                       c.candidate.candidateId ==
@@ -259,6 +264,28 @@ export default function Home() {
             No rounds found.
           </Typography>
         </Box>
+      ) : null}
+      <Box sx={{ height: 32 }} />
+      {rounds != null && !loading && rounds?.length > 0 ? (
+        <BarChart
+          sx={{ padding: 1 }}
+          width="1200"
+          height="800"
+          xAxis={[
+            {
+              scaleType: "band",
+              data: rounds[0].candidateVoteCounts.map((e) => {
+                return `${e.candidate.candidateName} (${e.candidate.candidateParty})`;
+              }),
+            },
+          ]}
+          series={rounds.map((round) => {
+            return {
+              stack: "total",
+              data: round.candidateVoteCounts.map((e) => e.voteCount),
+            };
+          })}
+        />
       ) : null}
       <Snackbar
         open={errorSnackbarOpen}
