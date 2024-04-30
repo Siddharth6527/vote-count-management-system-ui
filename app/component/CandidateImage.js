@@ -14,7 +14,7 @@ export default function CandidateImage({ id, width, height }) {
         objectFit: "contain",
       }}
       onError={setError}
-      src={API_CANDIDATE_IMAGE_URL + id}
+      src={API_CANDIDATE_IMAGE_URL + String(id)}
     />
   ) : (
     <Box

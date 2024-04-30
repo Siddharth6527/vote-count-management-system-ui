@@ -23,7 +23,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Paper from "@mui/material/Paper";
 import AddCandidateSwipeableDrawerContent from "../component/AddCandidateSwipeableDrawerContent";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -141,7 +140,7 @@ export default function Candidates() {
       >
         Newly added candidates will have zero votes in existing rounds.
       </Alert>
-      <Box sx={{ height: 16 }} />
+      <Box sx={{ height: 32 }} />
       <Box
         sx={{
           display: "flex",
@@ -158,7 +157,7 @@ export default function Candidates() {
           <Refresh />
         </IconButton>
       </Box>
-      <Box sx={{ height: 16 }} />
+      <Box sx={{ height: 32 }} />
       {loading ? (
         <Box
           sx={{

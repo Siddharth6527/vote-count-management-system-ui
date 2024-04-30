@@ -6,3 +6,4 @@ export const API_CANDIDATE_IMAGE_URL = `${API_BASE_URL}/candidates/image/`;
 export const API_CANDIDATE_DELETE_URL = `${API_BASE_URL}/candidates/delete/`;
 export const API_CANDIDATE_SAVE_URL = `${API_BASE_URL}/candidates/save`;
 export const API_ROUNDS_URL = `${API_BASE_URL}/rounds/`;
+export const API_ROUNDS_DELETE_URL = `${API_BASE_URL}/rounds/delete/`;
