@@ -227,13 +227,13 @@ export default function Rounds() {
               <TableBody>
                 {(() => {
                   try {
-                    return rounds.map((round, i) => {
+                    return rounds.map((round) => {
                       return (
                         <React.Fragment>
                           <TableRow
                             key={`${round.roundId}-${round.roundDistrict}`}
                             sx={{
-                              "*": { borderBottom: "unset" },
+                              "*": { border: "unset" },
                             }}
                           >
                             <TableCell size="small">{round.roundId}</TableCell>
