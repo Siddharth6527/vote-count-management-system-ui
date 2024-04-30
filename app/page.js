@@ -18,6 +18,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Paper,
 } from "@mui/material";
 import CandidateImage from "./component/CandidateImage";
 import { API_ROUNDS_URL } from "./utils/api";
@@ -96,19 +97,6 @@ export default function Home() {
       }}
     >
       <Box sx={{ height: 16 }} />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "flex-start",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="h4" component="div">
-          Results
-        </Typography>
-      </Box>
-      <Box sx={{ height: 32 }} />{" "}
       <Box sx={{ display: "flex", flexDirection: "row" }}>
         <FormControl>
           <InputLabel id="sort-label">Sort</InputLabel>
@@ -163,84 +151,97 @@ export default function Home() {
       ) : null}
       <Box sx={{ height: 32 }} />
       {rounds != null && !loading && rounds?.length > 0 ? (
-        <Card
-          sx={{
-            width: {
-              md: "100%",
-            },
-            overflow: {
-              xs: "visible",
-              md: "100%",
-            },
-            whiteSpace: "nowrap",
-          }}
-          elevation={2}
+        <TableContainer
+          sx={{ whiteSpace: "nowrap" }}
+          className="result"
+          component={Paper}
         >
-          <TableContainer>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell size="small">Round Number</TableCell>
-                  <TableCell>Round District</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {(() => {
-                  try {
-                    return rounds.map((round) => {
-                      return (
-                        <React.Fragment>
-                          <TableRow
-                            key={`${round.roundId}-${round.roundDistrict}`}
-                            sx={{
-                              "*": { border: "unset" },
-                            }}
-                          >
-                            <TableCell size="small">{round.roundId}</TableCell>
-                            <TableCell>{round.roundDistrict}</TableCell>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell size="small" align="center">
+                  &nbsp;
+                </TableCell>
+                <TableCell align="center">&nbsp;</TableCell>
+                {rounds.map((round) => {
+                  return (
+                    <TableCell
+                      sx={{ maxLines: 2 }}
+                      align="center"
+                      key={`Round ${round.roundId}\n(${round.roundDistrict})`}
+                    >
+                      {`Round ${round.roundId}`}
+                      <br />
+                      {`(${round.roundDistrict})`}
+                    </TableCell>
+                  );
+                })}
+                <TableCell align="center">
+                  &nbsp;&nbsp;&nbsp;&nbsp;Total&nbsp;&nbsp;&nbsp;&nbsp;
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {(() => {
+                try {
+                  const round = rounds[0];
+                  return (
+                    <React.Fragment>
+                      {round.candidateVoteCounts.map((e) => {
+                        const candidate = e.candidate;
+                        return (
+                          <TableRow key={candidate.candidateId}>
+                            <TableCell align="center">
+                              <CandidateImage
+                                width={24}
+                                height={24}
+                                id={candidate.candidateId}
+                              />
+                            </TableCell>
+                            <TableCell align="center">
+                              {candidate.candidateName}
+                              <br />
+                              <Chip
+                                label={candidate.candidateParty}
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            {rounds.map((round) => {
+                              return (
+                                <TableCell align="center">
+                                  {round.candidateVoteCounts.find(
+                                    (c) =>
+                                      c.candidate.candidateId ==
+                                      candidate.candidateId
+                                  )?.voteCount || 0}
+                                </TableCell>
+                              );
+                            })}
+                            <TableCell align="center">
+                              {rounds.reduce(
+                                (acc, round) =>
+                                  acc +
+                                  round.candidateVoteCounts.find(
+                                    (c) =>
+                                      c.candidate.candidateId ==
+                                      candidate.candidateId
+                                  )?.voteCount,
+                                0
+                              )}
+                            </TableCell>
                           </TableRow>
-                          <TableCell colSpan={3}>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                alignItems: "center",
-                                flexWrap: "wrap",
-                              }}
-                            >
-                              {round.candidateVoteCounts.map((e) => (
-                                <Chip
-                                  sx={{
-                                    marginRight: 1,
-                                    marginBottom: 1,
-                                    paddingLeft: 1,
-                                  }}
-                                  avatar={
-                                    <CandidateImage
-                                      width={20}
-                                      height={20}
-                                      id={e.candidate.candidateId}
-                                    />
-                                  }
-                                  label={`${e.candidate.candidateName} : ${e.voteCount} votes`}
-                                  key={e.candidate.candidateId}
-                                />
-                              ))}
-                            </Box>
-                          </TableCell>
-                        </React.Fragment>
-                      );
-                    });
-                  } catch (e) {
-                    console.log(e);
-                    return null;
-                  }
-                })()}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Card>
+                        );
+                      })}
+                    </React.Fragment>
+                  );
+                } catch (e) {
+                  console.log(e);
+                  return null;
+                }
+              })()}
+            </TableBody>
+          </Table>
+        </TableContainer>
       ) : null}
       {rounds?.length == 0 && !loading ? (
         <Box

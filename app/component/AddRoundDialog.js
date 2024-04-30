@@ -29,7 +29,7 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
   const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
 
   const [roundId, setRoundNumber] = useState(null);
-  const [roundDistrict, setRoundDistrict] = useState("Nainital");
+  const [roundDistrict, setRoundDistrict] = useState("Udham Singh Nagar");
 
   const [candidateVotes, setCandidateVotes] = useState({});
 
