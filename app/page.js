@@ -211,6 +211,7 @@ export default function Home() {
                             {rounds.map((round) => {
                               return (
                                 <TableCell
+                                  key={`${round.roundId}-${round.roundDistrict}`}
                                   id={`${round.roundId}-${round.roundDistrict}`}
                                   align="center"
                                 >
