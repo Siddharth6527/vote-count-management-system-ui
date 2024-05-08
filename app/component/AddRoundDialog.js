@@ -18,6 +18,7 @@ import Slide from "@mui/material/Slide";
 import { CredentialsContext } from "../utils/auth";
 import { Box } from "@mui/material";
 import CandidateImage from "./CandidateImage";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -30,24 +31,29 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
 
   const [roundId, setRoundNumber] = useState(null);
   const [roundDistrict, setRoundDistrict] = useState("Udham Singh Nagar");
+  const [roundConstituency, setRoundConstituency] = useState("");
 
   const [candidateVotes, setCandidateVotes] = useState({});
 
   const [roundIdError, setRoundNumberError] = useState(false);
   const [roundDistrictError, setRoundDistrictError] = useState(false);
+  const [roundConstituencyError, setRoundConstituencyError] = useState(false);
   const [candidateVoteErrors, setCandidateVoteErrors] = useState({});
 
   const addRound = async () => {
     if (loading) {
       return;
     }
-    console.log({
-      roundId: roundId,
-      roundDistrict: roundDistrict,
-      candidateVotes: candidateVotes,
-    });
+    // console.log({
+    //   roundId: roundId,
+    //   roundDistrict: roundDistrict,
+    //   candidateVotes: candidateVotes,
+    // });
+
+    // FORM VALIDATION
     setRoundNumberError(false);
     setRoundDistrictError(false);
+    setRoundConstituencyError(false);
     setCandidateVoteErrors({});
     if (roundId == null) {
       setRoundNumberError(true);
@@ -56,6 +62,10 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
     if (roundDistrict == null) {
       setRoundDistrictError(true);
       return;
+    }
+
+    if (roundConstituency == null || roundConstituency == "") {
+      setRoundConstituencyError(true);
     }
     for (const candidate of candidates) {
       if (typeof candidateVotes[candidate.candidateId] !== "number") {
@@ -70,6 +80,8 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
       console.log({
         roundId: roundId,
         roundDistrict: roundDistrict,
+        // for testing
+        roundConstituency: roundConstituency,
         candidateVotes: candidateVotes,
       });
       const response = await fetch(API_ROUNDS_SAVE_URL, {
@@ -83,9 +95,12 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
         body: JSON.stringify({
           roundId: roundId,
           roundDistrict: roundDistrict,
+          roundConstituency: roundConstituency,
           candidateVotes: candidateVotes,
         }),
       });
+
+      console.log("SIDDHART REQUEST IS : " + response);
       const data = await response.json();
       console.log(data);
       if (response.status == 200) {
@@ -110,6 +125,7 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
       onClose={onClose}
       TransitionComponent={Transition}
     >
+      {/* FOR NAV BAR */}
       <AppBar sx={{ position: "relative" }}>
         <Toolbar>
           <IconButton
@@ -163,6 +179,7 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
         <Box sx={{ height: 16 }} />
         <FormControl>
           <InputLabel id="round-district-label">Round District</InputLabel>
+          {/* FOR DISTRICT SELECTION */}
           <Select
             id="round-district-select"
             labelId="round-district-label"
@@ -176,10 +193,43 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
             <MenuItem value={"Udham Singh Nagar"}>Udham Singh Nagar</MenuItem>
           </Select>
         </FormControl>
+        {/* ADD HERE SELECTION FOR CONSTITUENCY */}
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">
+            Round Constituency
+          </InputLabel>
+          <Select
+            id="round-constituency-label"
+            labelId="round-constituency-label"
+            value={roundConstituency}
+            variant="outlined"
+            label="Round Constituency"
+            onChange={(e) => setRoundConstituency(e.target.value)}
+            error={roundConstituencyError}
+          >
+            <MenuItem value={"Lalkuan"}>Lalkuan</MenuItem>
+            <MenuItem value={"Bhimtal"}>Bhimtal</MenuItem>
+            <MenuItem value={"Nanital"}>Nanital</MenuItem>
+            <MenuItem value={"Haldwani"}>Haldwani</MenuItem>
+            <MenuItem value={"Kaladhungi"}>Kaladhungi</MenuItem>
+            <MenuItem value={"Jaspur"}>Jaspur</MenuItem>
+            <MenuItem value={"Bajpur"}>Bajpur</MenuItem>
+            <MenuItem value={"Gadpur"}>Gadpur</MenuItem>
+            <MenuItem value={"Rudrapur"}>Rudrapur</MenuItem>
+            <MenuItem value={"Kiccha"}>Kichha</MenuItem>
+            <MenuItem value={"Sitarganj"}>Sitarganj</MenuItem>
+            <MenuItem value={"Nankmatta"}>Nanakmatta</MenuItem>
+            <MenuItem value={"Khatima"}>Khatima</MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* /////////////////////////////////////////////// */}
+
         <Box sx={{ height: 16 }} />
         <Typography variant="body1" component="div">
           Candidate votes
         </Typography>
+        {/* FOR FILLING ALL THE CANDIDATES ROUND'S DETAILS */}
         <Box sx={{ height: 16 }} />
         {candidates != undefined &&
           candidates.length > 0 &&
