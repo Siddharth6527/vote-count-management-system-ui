@@ -187,8 +187,13 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
           >
             {getCredentials().user == "admin"
               ? [
-                  <MenuItem value={"Nainital"}>Nainital</MenuItem>,
-                  <MenuItem value={"Udham Singh Nagar"}>
+                  <MenuItem key={"Nainital"} value={"Nainital"}>
+                    Nainital
+                  </MenuItem>,
+                  <MenuItem
+                    key={"Udham Singh Nagar"}
+                    value={"Udham Singh Nagar"}
+                  >
                     Udham Singh Nagar
                   </MenuItem>,
                 ]
@@ -235,27 +240,57 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
           >
             {getCredentials().user == "admin"
               ? [
-                  <MenuItem value={"Lalkuan"}>Lalkuan</MenuItem>,
-                  <MenuItem value={"Bhimtal"}>Bhimtal</MenuItem>,
-                  <MenuItem value={"Nainital"}>Nainital</MenuItem>,
-                  <MenuItem value={"Haldwani"}>Haldwani</MenuItem>,
-                  <MenuItem value={"Kaladhungi"}>Kaladhungi</MenuItem>,
-                  <MenuItem value={"Jaspur"}>Jaspur</MenuItem>,
-                  <MenuItem value={"Kashipur"}>Kashipur</MenuItem>,
-                  <MenuItem value={"Bajpur"}>Bajpur</MenuItem>,
-                  <MenuItem value={"Gadarpur"}>Gadarpur</MenuItem>,
-                  <MenuItem value={"Rudrapur"}>Rudrapur</MenuItem>,
-                  <MenuItem value={"Kiccha"}>Kichha</MenuItem>,
-                  <MenuItem value={"Sitarganj"}>Sitarganj</MenuItem>,
-                  <MenuItem value={"Nanakmatta"}>Nanakmatta</MenuItem>,
-                  <MenuItem value={"Khatima"}>Khatima</MenuItem>,
+                  <MenuItem key={"Lalkuan"} value={"Lalkuan"}>
+                    Lalkuan
+                  </MenuItem>,
+                  <MenuItem key={"Bhimtal"} value={"Bhimtal"}>
+                    Bhimtal
+                  </MenuItem>,
+                  <MenuItem key={"Nainital"} value={"Nainital"}>
+                    Nainital
+                  </MenuItem>,
+                  <MenuItem key={"Haldwani"} value={"Haldwani"}>
+                    Haldwani
+                  </MenuItem>,
+                  <MenuItem key={"Kaladhungi"} value={"Kaladhungi"}>
+                    Kaladhungi
+                  </MenuItem>,
+                  <MenuItem key={"Jaspur"} value={"Jaspur"}>
+                    Jaspur
+                  </MenuItem>,
+                  <MenuItem key={"Lalkuan"} value={"Kashipur"}>
+                    Kashipur
+                  </MenuItem>,
+                  <MenuItem key={"Bajpur"} value={"Bajpur"}>
+                    Bajpur
+                  </MenuItem>,
+                  <MenuItem key={"Gadarpur"} value={"Gadarpur"}>
+                    Gadarpur
+                  </MenuItem>,
+                  <MenuItem key={"Rudrapur"} value={"Rudrapur"}>
+                    Rudrapur
+                  </MenuItem>,
+                  <MenuItem key={"Kiccha"} value={"Kiccha"}>
+                    Kichha
+                  </MenuItem>,
+                  <MenuItem key={"Sitarganj"} value={"Sitarganj"}>
+                    Sitarganj
+                  </MenuItem>,
+                  <MenuItem key={"Nanakmatta"} value={"Nanakmatta"}>
+                    Nanakmatta
+                  </MenuItem>,
+                  <MenuItem key={"Khatima"} value={"Khatima"}>
+                    Khatima
+                  </MenuItem>,
                 ]
               : []}
 
             {["Lalkuan", "Bhimtal", "Nainital", "Haldwani", "Kaladhungi"]
               .filter((e) => getCredentials().user == e.toLowerCase())
               .map((e) => (
-                <MenuItem value={e}>{e}</MenuItem>
+                <MenuItem key={e} value={e}>
+                  {e}
+                </MenuItem>
               ))}
 
             {[
@@ -271,7 +306,9 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
             ]
               .filter((e) => getCredentials().user == e.toLowerCase())
               .map((e) => (
-                <MenuItem value={e}>{e}</MenuItem>
+                <MenuItem key={e} value={e}>
+                  {e}
+                </MenuItem>
               ))}
           </Select>
         </FormControl>
