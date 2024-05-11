@@ -255,7 +255,8 @@ export default function Rounds() {
                               sx={{
                                 display:
                                   getCredentials().user !=
-                                  round.roundConstituency.toLowerCase()
+                                    round.roundConstituency.toLowerCase() ||
+                                  getCredentials().user == "admin"
                                     ? "none"
                                     : "auto",
                               }}
