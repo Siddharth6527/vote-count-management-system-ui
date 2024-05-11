@@ -108,7 +108,7 @@ export default function Rounds() {
     setLoading(false);
   };
 
-  const deleteRound = async (roundId, roundDistrict) => {
+  const deleteRound = async (roundId, roundDistrict, roundConstituency) => {
     if (loading) {
       return;
     }
@@ -117,15 +117,23 @@ export default function Rounds() {
     console.log("Deleting round...");
 
     try {
-      await fetch(API_ROUNDS_DELETE_URL + roundId + "/" + roundDistrict, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "Basic " +
-            btoa(getCredentials().user + ":" + getCredentials().password),
-        },
-      });
+      await fetch(
+        API_ROUNDS_DELETE_URL +
+          roundId +
+          "/" +
+          roundDistrict +
+          "/" +
+          roundConstituency,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              "Basic " +
+              btoa(getCredentials().user + ":" + getCredentials().password),
+          },
+        }
+      );
     } catch (e) {
       console.log(e);
       setErrorSnackbarOpen(true);
@@ -221,6 +229,7 @@ export default function Rounds() {
                 <TableRow>
                   <TableCell size="small">Round Number</TableCell>
                   <TableCell>Round District</TableCell>
+                  <TableCell>Round Constituency</TableCell>
                   <TableCell size="small">&nbsp;</TableCell>
                 </TableRow>
               </TableHead>
@@ -240,6 +249,7 @@ export default function Rounds() {
                           >
                             <TableCell size="small">{round.roundId}</TableCell>
                             <TableCell>{round.roundDistrict}</TableCell>
+                            <TableCell>{round.roundConstituency}</TableCell>
                             <TableCell size="small">
                               <IconButton
                                 onClick={() => {
@@ -365,8 +375,9 @@ export default function Rounds() {
             onClick={async () => {
               const roundId = deleteDialogRound?.roundId;
               const roundDistrict = deleteDialogRound?.roundDistrict;
+              const roundConstituency = deleteDialogRound?.roundConstituency;
               setDeleteDialogRound(null);
-              await deleteRound(roundId, roundDistrict);
+              await deleteRound(roundId, roundDistrict, roundConstituency);
               await fetchRounds();
             }}
           >

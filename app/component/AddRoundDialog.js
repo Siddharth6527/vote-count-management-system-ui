@@ -63,9 +63,9 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
       setRoundDistrictError(true);
       return;
     }
-
-    if (roundConstituency == null || roundConstituency == "") {
+    if (roundConstituency == null) {
       setRoundConstituencyError(true);
+      return;
     }
     for (const candidate of candidates) {
       if (typeof candidateVotes[candidate.candidateId] !== "number") {
@@ -80,7 +80,6 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
       console.log({
         roundId: roundId,
         roundDistrict: roundDistrict,
-        // for testing
         roundConstituency: roundConstituency,
         candidateVotes: candidateVotes,
       });
@@ -99,8 +98,6 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
           candidateVotes: candidateVotes,
         }),
       });
-
-      console.log("SIDDHART REQUEST IS : " + response);
       const data = await response.json();
       console.log(data);
       if (response.status == 200) {
@@ -150,7 +147,6 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
           opacity: loading ? 0.5 : 1.0,
           overflowY: "scroll",
           width: "100%",
-          height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
@@ -207,19 +203,28 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
             onChange={(e) => setRoundConstituency(e.target.value)}
             error={roundConstituencyError}
           >
-            <MenuItem value={"Lalkuan"}>Lalkuan</MenuItem>
-            <MenuItem value={"Bhimtal"}>Bhimtal</MenuItem>
-            <MenuItem value={"Nanital"}>Nanital</MenuItem>
-            <MenuItem value={"Haldwani"}>Haldwani</MenuItem>
-            <MenuItem value={"Kaladhungi"}>Kaladhungi</MenuItem>
-            <MenuItem value={"Jaspur"}>Jaspur</MenuItem>
-            <MenuItem value={"Bajpur"}>Bajpur</MenuItem>
-            <MenuItem value={"Gadpur"}>Gadpur</MenuItem>
-            <MenuItem value={"Rudrapur"}>Rudrapur</MenuItem>
-            <MenuItem value={"Kiccha"}>Kichha</MenuItem>
-            <MenuItem value={"Sitarganj"}>Sitarganj</MenuItem>
-            <MenuItem value={"Nankmatta"}>Nanakmatta</MenuItem>
-            <MenuItem value={"Khatima"}>Khatima</MenuItem>
+            {roundDistrict == "Nainital" || roundDistrict == null
+              ? [
+                  <MenuItem value={"Lalkuan"}>Lalkuan</MenuItem>,
+                  <MenuItem value={"Bhimtal"}>Bhimtal</MenuItem>,
+                  <MenuItem value={"Nainital"}>Nainital</MenuItem>,
+                  <MenuItem value={"Haldwani"}>Haldwani</MenuItem>,
+                  <MenuItem value={"Kaladhungi"}>Kaladhungi</MenuItem>,
+                ]
+              : []}
+            {roundDistrict == "Udham Singh Nagar" || roundDistrict == null
+              ? [
+                  <MenuItem value={"Jaspur"}>Jaspur</MenuItem>,
+                  <MenuItem value={"Kashipur"}>Kashipur</MenuItem>,
+                  <MenuItem value={"Bajpur"}>Bajpur</MenuItem>,
+                  <MenuItem value={"Gadarpur"}>Gadarpur</MenuItem>,
+                  <MenuItem value={"Rudrapur"}>Rudrapur</MenuItem>,
+                  <MenuItem value={"Kiccha"}>Kichha</MenuItem>,
+                  <MenuItem value={"Sitarganj"}>Sitarganj</MenuItem>,
+                  <MenuItem value={"Nanakmatta"}>Nanakmatta</MenuItem>,
+                  <MenuItem value={"Khatima"}>Khatima</MenuItem>,
+                ]
+              : []}
           </Select>
         </FormControl>
 

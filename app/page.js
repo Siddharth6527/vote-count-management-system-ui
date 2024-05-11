@@ -170,11 +170,13 @@ export default function Home() {
                     <TableCell
                       sx={{ maxLines: 2 }}
                       align="center"
-                      key={`Round ${round.roundId}\n(${round.roundDistrict})`}
+                      key={`Round\n${round.roundId}\n(${round.roundDistrict})\n(${round.roundConstituency})`}
                     >
                       {`Round ${round.roundId}`}
                       <br />
                       {`(${round.roundDistrict})`}
+                      <br />
+                      {`(${round.roundConstituency})`}
                     </TableCell>
                   );
                 })}
@@ -195,7 +197,6 @@ export default function Home() {
                           <TableRow key={candidate.candidateId}>
                             <TableCell align="center">
                               <CandidateImage
-                                width={24}
                                 height={24}
                                 id={candidate.candidateId}
                               />
