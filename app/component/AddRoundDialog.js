@@ -30,7 +30,7 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
   const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
 
   const [roundId, setRoundNumber] = useState(null);
-  const [roundDistrict, setRoundDistrict] = useState("Udham Singh Nagar");
+  const [roundDistrict, setRoundDistrict] = useState(null);
   const [roundConstituency, setRoundConstituency] = useState("");
 
   const [candidateVotes, setCandidateVotes] = useState({});
@@ -143,11 +143,11 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
         sx={{
           p: 2,
           pointerEvents: loading ? "none" : "auto",
-          flex: 1,
           opacity: loading ? 0.5 : 1.0,
           overflowY: "scroll",
           width: "100%",
           display: "flex",
+          gap: "12px",
           flexDirection: "column",
           justifyContent: "flex-start",
           alignItems: "stretch",
@@ -185,8 +185,38 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
             onChange={(e) => setRoundDistrict(e.target.value)}
             error={roundDistrictError}
           >
-            <MenuItem value={"Nainital"}>Nainital</MenuItem>
-            <MenuItem value={"Udham Singh Nagar"}>Udham Singh Nagar</MenuItem>
+            {getCredentials().user == "admin"
+              ? [
+                  <MenuItem value={"Nainital"}>Nainital</MenuItem>,
+                  <MenuItem value={"Udham Singh Nagar"}>
+                    Udham Singh Nagar
+                  </MenuItem>,
+                ]
+              : []}
+            {[
+              "Lalkuan",
+              "Bhimtal",
+              "Nainital",
+              "Haldwani",
+              "Kaladhungi",
+            ].filter((e) => getCredentials().user == e.toLowerCase()).length >
+            0 ? (
+              <MenuItem value={"Nainital"}>Nainital</MenuItem>
+            ) : null}
+            {[
+              "Jaspur",
+              "Kashipur",
+              "Bajpur",
+              "Gadarpur",
+              "Rudrapur",
+              "Kiccha",
+              "Sitarganj",
+              "Nanakmatta",
+              "Khatima",
+            ].filter((e) => getCredentials().user == e.toLowerCase()).length >
+            0 ? (
+              <MenuItem value={"Udham Singh Nagar"}>Udham Singh Nagar</MenuItem>
+            ) : null}
           </Select>
         </FormControl>
         {/* ADD HERE SELECTION FOR CONSTITUENCY */}
@@ -203,17 +233,13 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
             onChange={(e) => setRoundConstituency(e.target.value)}
             error={roundConstituencyError}
           >
-            {roundDistrict == "Nainital" || roundDistrict == null
+            {getCredentials().user == "admin"
               ? [
                   <MenuItem value={"Lalkuan"}>Lalkuan</MenuItem>,
                   <MenuItem value={"Bhimtal"}>Bhimtal</MenuItem>,
                   <MenuItem value={"Nainital"}>Nainital</MenuItem>,
                   <MenuItem value={"Haldwani"}>Haldwani</MenuItem>,
                   <MenuItem value={"Kaladhungi"}>Kaladhungi</MenuItem>,
-                ]
-              : []}
-            {roundDistrict == "Udham Singh Nagar" || roundDistrict == null
-              ? [
                   <MenuItem value={"Jaspur"}>Jaspur</MenuItem>,
                   <MenuItem value={"Kashipur"}>Kashipur</MenuItem>,
                   <MenuItem value={"Bajpur"}>Bajpur</MenuItem>,
@@ -225,6 +251,28 @@ export default function AddRoundDialog({ open, onClose, candidates }) {
                   <MenuItem value={"Khatima"}>Khatima</MenuItem>,
                 ]
               : []}
+
+            {["Lalkuan", "Bhimtal", "Nainital", "Haldwani", "Kaladhungi"]
+              .filter((e) => getCredentials().user == e.toLowerCase())
+              .map((e) => (
+                <MenuItem value={e}>{e}</MenuItem>
+              ))}
+
+            {[
+              "Jaspur",
+              "Kashipur",
+              "Bajpur",
+              "Gadarpur",
+              "Rudrapur",
+              "Kiccha",
+              "Sitarganj",
+              "Nanakmatta",
+              "Khatima",
+            ]
+              .filter((e) => getCredentials().user == e.toLowerCase())
+              .map((e) => (
+                <MenuItem value={e}>{e}</MenuItem>
+              ))}
           </Select>
         </FormControl>
 

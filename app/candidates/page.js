@@ -102,7 +102,7 @@ export default function Candidates() {
   };
 
   useEffect(() => {
-    if (!hasCredentials()) {
+    if (getCredentials().user != "admin") {
       router.replace("/");
       return;
     }

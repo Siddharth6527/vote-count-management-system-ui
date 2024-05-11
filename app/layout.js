@@ -54,9 +54,13 @@ const theme = createTheme({
 const drawerWidth = 300;
 const primaryNavItems = [{ name: "Results", link: "/" }];
 const secondaryNavItems = [{ name: "Login", link: "/login" }];
-const primaryNavItemsAuth = [
+const primaryNavItemsAdmin = [
   { name: "Results", link: "/" },
   { name: "Candidates", link: "/candidates" },
+  { name: "Rounds", link: "/rounds" },
+];
+const primaryNavItemsAuth = [
+  { name: "Results", link: "/" },
   { name: "Rounds", link: "/rounds" },
 ];
 const secondaryNavItemsAuth = [{ name: "Logout", link: "/logout" }];
@@ -85,6 +89,8 @@ export default function RootLayout({ children }) {
 
   const hasCredentials = () => credentials.user && credentials.password;
 
+  const hasAdminCredentials = () => credentials.user == "admin";
+
   // --------------------------------------------------
 
   const drawer = (
@@ -97,7 +103,12 @@ export default function RootLayout({ children }) {
         Vote Count Management
       </Typography>
       <Divider />
-      {(hasCredentials() ? primaryNavItemsAuth : primaryNavItems).map((e) => (
+      {(hasAdminCredentials()
+        ? primaryNavItemsAdmin
+        : hasCredentials()
+        ? primaryNavItemsAuth
+        : primaryNavItems
+      ).map((e) => (
         <Link key={e.link} href={e.link} passHref legacyBehavior>
           <ListItem disablePadding>
             <ListItemButton>
@@ -182,7 +193,9 @@ export default function RootLayout({ children }) {
                       Vote Count Management
                     </Typography>
                     <Box sx={{ display: { xs: "none", md: "block" } }}>
-                      {(hasCredentials()
+                      {(hasAdminCredentials()
+                        ? primaryNavItemsAdmin
+                        : hasCredentials()
                         ? primaryNavItemsAuth
                         : primaryNavItems
                       ).map((e) => (

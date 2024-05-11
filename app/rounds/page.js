@@ -250,7 +250,16 @@ export default function Rounds() {
                             <TableCell size="small">{round.roundId}</TableCell>
                             <TableCell>{round.roundDistrict}</TableCell>
                             <TableCell>{round.roundConstituency}</TableCell>
-                            <TableCell size="small">
+                            <TableCell
+                              size="small"
+                              sx={{
+                                display:
+                                  getCredentials().user !=
+                                  round.roundConstituency.toLowerCase()
+                                    ? "none"
+                                    : "auto",
+                              }}
+                            >
                               <IconButton
                                 onClick={() => {
                                   setDeleteDialogRound(round);
