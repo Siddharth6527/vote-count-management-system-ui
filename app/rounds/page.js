@@ -232,6 +232,7 @@ export default function Rounds() {
                         <React.Fragment
                           key={`${round.roundId}-${round.roundDistrict}`}
                         >
+                          {/* FOR SHOWING ROUNDS STATS */}
                           <TableRow
                             sx={{
                               "*": { border: "unset" },
@@ -250,6 +251,7 @@ export default function Rounds() {
                             </TableCell>
                           </TableRow>
                           <TableCell colSpan={3}>
+                            {/* FOR SHOWING ROUND CHIPS */}
                             <Box
                               sx={{
                                 display: "flex",
@@ -315,6 +317,7 @@ export default function Rounds() {
         onClose={() => setErrorSnackbarOpen(false)}
         message={"Refresh: Failure"}
       />
+      {/* TO PREVENT ADDING ROUND WITHOUT CANDIDATES */}
       <Dialog
         open={noCandidatesDialogOpen}
         onClose={() => setNoCandidatesDialogOpen(false)}
@@ -347,6 +350,7 @@ export default function Rounds() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">Delete ?</DialogTitle>
+        {/* FOR CONFIRMING DELETE */}
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Round with following details will be deleted:
