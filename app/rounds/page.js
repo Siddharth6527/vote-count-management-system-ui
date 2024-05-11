@@ -254,11 +254,11 @@ export default function Rounds() {
                               size="small"
                               sx={{
                                 display:
-                                  getCredentials().user !=
+                                  getCredentials().user ==
                                     round.roundConstituency.toLowerCase() ||
                                   getCredentials().user == "admin"
-                                    ? "none"
-                                    : "auto",
+                                    ? "auto"
+                                    : "none",
                               }}
                             >
                               <IconButton
