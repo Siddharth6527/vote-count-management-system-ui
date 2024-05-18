@@ -1,0 +1,13 @@
+// {
+//   "presents": ["next/label"]
+// }
+// {
+//   "presents": ["next/babel"],
+//   "plugin": []
+// }
+// {
+//   "presents": ["@babel/preset-react"]
+// }
+{
+  "plugins": ["@babel/plugin-syntax-jsx"]
+}

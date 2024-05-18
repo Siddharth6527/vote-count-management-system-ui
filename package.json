@@ -22,6 +22,8 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@babel/plugin-syntax-jsx": "^7.24.1",
+    "@babel/preset-react": "^7.24.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.3"
   }
