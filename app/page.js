@@ -20,12 +20,36 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
+import { Grid } from "@mui/material";
+import Image from "next/image";
+import ActionAreaCard from "./component/Features/Card";
 import CandidateImage from "./component/CandidateImage";
 import { API_ROUNDS_URL } from "./utils/api";
 
 import { BarChart } from "@mui/x-charts/BarChart";
 
+import Aim from "./component/Aim/Aim";
+import Footer from "./component/Footer/Footer";
+
+// FOR ADDING IMAGES
+import img1 from "../public/test2.jpg";
+import img3 from "../public/automationVector.jpg";
+import img4 from "../public/ss.jpg";
+import EleCountImg from "../public/EleCount.jpg";
+
 export default function Home() {
+  // for custom text -- GONNA REFINE AFTERWARDS
+  const text1 =
+    "Real-time updates deliver instant information, keeping users informed without delay. They enhance engagement and decision-making by ensuring access to the latest data across platforms.";
+
+  const text2 =
+    "Automated application software performs tasks with minimal human intervention using pre-defined rules and algorithms, enhancing efficiency and reducing errors. It revolutionizes productivity, transforming both everyday tasks and complex operations across diverse industries.";
+
+  const text3 =
+    "Safe software operates without causing unintended harm or adverse effects, ensuring user safety and system stability. Secure software protects against unauthorized access and malicious attacks, maintaining confidentiality, integrity, and availability of data.";
+
+  ///////////////////////////////////////////////////////
+
   const [sort, setSort] = useState("candidateId");
   const [order, setOrder] = useState("asc");
 
@@ -99,6 +123,11 @@ export default function Home() {
       }}
     >
       <Box sx={{ height: 16 }} />
+      {/* ELECOUNT IMAGE */}
+      <Box sx={{ margin: "auto" }}>
+        <Image src={EleCountImg} alt={"elecount-img"} height={800} />
+      </Box>
+
       <Box sx={{ display: "flex", flexDirection: "row" }}>
         <FormControl>
           <InputLabel id="sort-label">Sort</InputLabel>
@@ -289,6 +318,60 @@ export default function Home() {
           })}
         />
       ) : null}
+
+      {/* AIM SECTION */}
+      <Aim />
+      {/* AIM SECTION ENDS */}
+
+      <Box height={100}></Box>
+
+      {/* FEATURES SECTION */}
+      {/* FOR FEATURES HEADING SECTION */}
+
+      <Grid
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+        container
+        spacing={2}
+      >
+        <Grid item xs={6}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h2" gutterBottom>
+              Features of EleCount
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
+
+      <Box height={50}></Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          gap: "10%",
+          padding: "2%",
+        }}
+      >
+        <ActionAreaCard heading="Real Time Data" text={text1} image={img1} />
+        <ActionAreaCard
+          heading="Automated Application"
+          text={text2}
+          image={img3}
+        />
+        <ActionAreaCard heading="Safe and Secure" text={text3} image={img4} />
+      </Box>
+      {/* FEATURES SECTION ENDS */}
+
+      {/* FOOTER SECTION */}
+      <Footer></Footer>
+      {/* FOOTER SECTION ENDS*/}
+
       <Snackbar
         open={errorSnackbarOpen}
         autoHideDuration={10000}
