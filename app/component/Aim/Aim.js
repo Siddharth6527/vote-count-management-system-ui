@@ -10,7 +10,7 @@ export default function Aim() {
     <div>
       <Box height={100} />
       <Box>
-        <Image src={mainImg} alt={"main-image"}></Image>
+        <Image src={mainImg} alt={"main-image"} layout="responsive"></Image>
       </Box>
       <Box sx={{ padding: "2%" }}>
         <Box

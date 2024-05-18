@@ -14,7 +14,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  Card,
   TableHead,
   TableRow,
   Typography,
@@ -26,8 +25,6 @@ import ActionAreaCard from "./component/Features/Card";
 import CandidateImage from "./component/CandidateImage";
 import { API_ROUNDS_URL } from "./utils/api";
 
-import { BarChart } from "@mui/x-charts/BarChart";
-
 import Aim from "./component/Aim/Aim";
 import Footer from "./component/Footer/Footer";
 
@@ -35,7 +32,7 @@ import Footer from "./component/Footer/Footer";
 import img1 from "../public/test2.jpg";
 import img3 from "../public/automationVector.jpg";
 import img4 from "../public/ss.jpg";
-import EleCountImg from "../public/EleCount.jpg";
+import EleCountImg from "../public/EleCountEdited.jpg";
 
 export default function Home() {
   // for custom text -- GONNA REFINE AFTERWARDS
@@ -124,11 +121,25 @@ export default function Home() {
     >
       <Box sx={{ height: 16 }} />
       {/* ELECOUNT IMAGE */}
-      <Box sx={{ margin: "auto" }}>
-        <Image src={EleCountImg} alt={"elecount-img"} height={800} />
+      <Box
+        sx={{
+          margin: "auto",
+        }}
+      >
+        {/* default height was 800 */}
+        <Image
+          src={EleCountImg}
+          alt={"elecount-img"}
+          layout="responsive"
+          // sx={{ height: { sm: 200, md: 300, lg: 400, xl: 800 } }}
+          // width={"50%"}
+          height={600}
+          // height={{ md: 800, lg: 600 }}
+        />
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "row" }}>
+        {/* FOR SORTING BUTTON */}
         <FormControl>
           <InputLabel id="sort-label">Sort</InputLabel>
           <Select
@@ -149,6 +160,7 @@ export default function Home() {
         </FormControl>
 
         <Box sx={{ width: 16 }} />
+        {/* FOR ORDERING BUTTON */}
         <FormControl>
           <InputLabel id="order-label">Order</InputLabel>
           <Select
@@ -166,6 +178,7 @@ export default function Home() {
           </Select>{" "}
         </FormControl>
       </Box>
+      {/* LOADING ANIMATION */}
       {loading ? (
         <Box
           sx={{
@@ -187,13 +200,18 @@ export default function Home() {
           className="result"
           component={Paper}
         >
+          {/* COLUMNS HEADINGS */}
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell size="small" align="center">
-                  &nbsp;
+                  {/* &nbsp; */}
+                  Initials
                 </TableCell>
-                <TableCell align="center">&nbsp;</TableCell>
+                <TableCell align="center">
+                  {/* &nbsp; */}
+                  Candidate Name
+                </TableCell>
                 {rounds.map((round) => {
                   return (
                     <TableCell
@@ -214,6 +232,8 @@ export default function Home() {
                 </TableCell>
               </TableRow>
             </TableHead>
+
+            {/* TABLE CONTENT SECTION */}
             <TableBody>
               {(() => {
                 try {
@@ -279,6 +299,8 @@ export default function Home() {
           </Table>
         </TableContainer>
       ) : null}
+
+      {/* NO ROUNDS FOUND SECTION */}
       {rounds?.length == 0 && !loading ? (
         <Box
           sx={{
@@ -296,28 +318,8 @@ export default function Home() {
           </Typography>
         </Box>
       ) : null}
+
       <Box sx={{ height: 32 }} />
-      {rounds != null && !loading && rounds?.length > 0 ? (
-        <BarChart
-          sx={{ padding: 1 }}
-          width="1200"
-          height="800"
-          xAxis={[
-            {
-              scaleType: "band",
-              data: rounds[0].candidateVoteCounts.map((e) => {
-                return `${e.candidate.candidateName} (${e.candidate.candidateParty})`;
-              }),
-            },
-          ]}
-          series={rounds.map((round) => {
-            return {
-              stack: "total",
-              data: round.candidateVoteCounts.map((e) => e.voteCount),
-            };
-          })}
-        />
-      ) : null}
 
       {/* AIM SECTION */}
       <Aim />
