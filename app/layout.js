@@ -52,17 +52,20 @@ const theme = createTheme({
 });
 
 const drawerWidth = 300;
-const primaryNavItems = [{ name: "Results", link: "/" }];
+const primaryNavItems = [
+  { name: "Results: Detailed", link: "/" },
+  { name: "Results: Cumulative", link: "/cumulative" },
+  { name: "Results: Constituency", link: "/constituency" },
+];
 const secondaryNavItems = [{ name: "Login", link: "/login" }];
 const primaryNavItemsAdmin = [
-  { name: "Results", link: "/" },
+  { name: "Results: Detailed", link: "/" },
+  { name: "Results: Cumulative", link: "/cumulative" },
+  { name: "Results: Constituency", link: "/constituency" },
   { name: "Candidates", link: "/candidates" },
   { name: "Rounds", link: "/rounds" },
 ];
-const primaryNavItemsAuth = [
-  { name: "Results", link: "/" },
-  { name: "Rounds", link: "/rounds" },
-];
+const primaryNavItemsAuth = [{ name: "Rounds", link: "/rounds" }];
 const secondaryNavItemsAuth = [{ name: "Logout", link: "/logout" }];
 
 export default function RootLayout({ children }) {
@@ -113,13 +116,10 @@ export default function RootLayout({ children }) {
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                {
-                  {
-                    "/": <AssessmentOutlined />,
-                    "/candidates": <PersonOutlined />,
-                    "/rounds": <ScheduleOutlined />,
-                  }[e.link]
-                }
+                {{
+                  "/candidates": <PersonOutlined />,
+                  "/rounds": <ScheduleOutlined />,
+                }[e.link] ?? <AssessmentOutlined />}
               </ListItemIcon>
               <ListItemText primary={e.name} />
             </ListItemButton>
@@ -168,7 +168,7 @@ export default function RootLayout({ children }) {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                width: "100vw",
+                width: "100%",
                 height: "100vh",
               }}
             >

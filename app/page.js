@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Box,
   FormControl,
@@ -22,12 +22,14 @@ import {
 } from "@mui/material";
 import CandidateImage from "./component/CandidateImage";
 import { API_ROUNDS_URL } from "./utils/api";
-
-import { BarChart } from "@mui/x-charts/BarChart";
-
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+} from "material-react-table";
 export default function Home() {
   const [sort, setSort] = useState("candidateId");
   const [order, setOrder] = useState("asc");
+  const [table, setTable] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [rounds, setRounds] = useState(null);
@@ -95,10 +97,10 @@ export default function Home() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
-        alignItems: "flex-start",
+        alignItems: "stretch",
       }}
     >
-      <Box sx={{ height: 16 }} />
+      {/* <Box sx={{ height: 16 }} />
       <Box sx={{ display: "flex", flexDirection: "row" }}>
         <FormControl>
           <InputLabel id="sort-label">Sort</InputLabel>
@@ -136,7 +138,7 @@ export default function Home() {
             <MenuItem value={"desc"}>Descending</MenuItem>
           </Select>{" "}
         </FormControl>
-      </Box>
+      </Box> */}
       {loading ? (
         <Box
           sx={{
@@ -151,105 +153,106 @@ export default function Home() {
           <CircularProgress sx={{ width: "100%" }} />
         </Box>
       ) : null}
-      <Box sx={{ height: 32 }} />
-      {rounds != null && !loading && rounds?.length > 0 ? (
-        <TableContainer
-          sx={{ whiteSpace: "nowrap" }}
-          className="result"
-          component={Paper}
-        >
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell size="small" align="center">
-                  &nbsp;
-                </TableCell>
-                <TableCell align="center">&nbsp;</TableCell>
-                {rounds.map((round) => {
-                  return (
-                    <TableCell
-                      sx={{ maxLines: 2 }}
-                      align="center"
-                      key={`Round\n${round.roundId}\n(${round.roundDistrict})\n(${round.roundConstituency})`}
-                    >
+      {rounds != null && !loading && rounds?.length > 0
+        ? (() => {
+            const columns = [
+              {
+                width: "100",
+                accessorKey: "candidateImage",
+                header: "",
+                size: 100,
+              },
+              {
+                width: "auto",
+                accessorKey: "candidateName",
+                header: "Candidate Name",
+                grow: true,
+              },
+              ...rounds.map((round) => {
+                return {
+                  width: "auto",
+                  accessorKey: `round-${round.roundId}-${round.roundDistrict}-${round.roundConstituency}`,
+                  header: (
+                    <div>
                       {`Round ${round.roundId}`}
                       <br />
-                      {`(${round.roundDistrict})`}
+                      {`${round.roundDistrict}`}
                       <br />
-                      {`(${round.roundConstituency})`}
-                    </TableCell>
-                  );
-                })}
-                <TableCell align="center">
-                  &nbsp;&nbsp;&nbsp;&nbsp;Total&nbsp;&nbsp;&nbsp;&nbsp;
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {(() => {
-                try {
-                  const round = rounds[0];
-                  return (
-                    <React.Fragment>
-                      {round.candidateVoteCounts.map((e) => {
-                        const candidate = e.candidate;
-                        return (
-                          <TableRow key={candidate.candidateId}>
-                            <TableCell align="center">
-                              <CandidateImage
-                                height={24}
-                                id={candidate.candidateId}
-                              />
-                            </TableCell>
-                            <TableCell align="center">
-                              {candidate.candidateName}
-                              <br />
-                              <Chip
-                                label={candidate.candidateParty}
-                                variant="outlined"
-                              />
-                            </TableCell>
-                            {rounds.map((round) => {
-                              return (
-                                <TableCell
-                                  key={`${round.roundId}-${round.roundDistrict}`}
-                                  id={`${round.roundId}-${round.roundDistrict}`}
-                                  align="center"
-                                >
-                                  {round.candidateVoteCounts.find(
-                                    (c) =>
-                                      c.candidate.candidateId ==
-                                      candidate.candidateId
-                                  )?.voteCount || 0}
-                                </TableCell>
-                              );
-                            })}
-                            <TableCell align="center">
-                              {rounds.reduce(
-                                (acc, round) =>
-                                  acc +
-                                  round.candidateVoteCounts.find(
-                                    (c) =>
-                                      c.candidate.candidateId ==
-                                      candidate.candidateId
-                                  )?.voteCount,
-                                0
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </React.Fragment>
-                  );
-                } catch (e) {
-                  console.log(e);
-                  return null;
-                }
-              })()}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      ) : null}
+                      {`${round.roundConstituency}`}
+                    </div>
+                  ),
+                  grow: true,
+                };
+              }),
+              {
+                width: "auto",
+                accessorKey: "total",
+                header: "Total",
+                size: 200,
+              },
+            ];
+            const data = [];
+            for (let i = 0; i < rounds[0].candidateVoteCounts.length; i++) {
+              let row = {
+                candidateImage: (
+                  <CandidateImage
+                    id={rounds[0].candidateVoteCounts[i].candidate.candidateId}
+                    width={28}
+                    height={28}
+                  />
+                ),
+                candidateName:
+                  rounds[0].candidateVoteCounts[i].candidate.candidateName,
+              };
+              for (let j = 0; j < rounds.length; j++) {
+                row[
+                  `round-${rounds[j].roundId}-${rounds[j].roundDistrict}-${rounds[j].roundConstituency}`
+                ] = rounds[j].candidateVoteCounts[i].voteCount;
+              }
+              row.total = rounds.reduce(
+                (acc, round) => acc + round.candidateVoteCounts[i].voteCount,
+                0
+              );
+              data.push(row);
+            }
+
+            console.log(data);
+            console.log(columns);
+
+            // const table = useMaterialReactTable({
+            //   enableColumnPinning: true,
+            //   layoutMode: "grid-no-grow",
+            //   data: data,
+            //   columns: columns,
+
+            //   initialState: {
+            //     columnPinning: {
+            //       left: ["candidateImage", "candidateName"],
+            //       right: ["total"],
+            //     },
+            //   },
+            // });
+
+            return (
+              <MaterialReactTable
+                muiTableHeadCellProps={{
+                  whiteSpace: "nowrap",
+                  maxLines: 3,
+                }}
+                data={data}
+                enablePagination={false}
+                enableColumnPinning={true}
+                columns={columns}
+                initialState={{
+                  columnPinning: {
+                    left: ["candidateImage", "candidateName"],
+                    right: ["total"],
+                  },
+                }}
+              />
+            );
+          })()
+        : null}
       {rounds?.length == 0 && !loading ? (
         <Box
           sx={{
@@ -267,28 +270,7 @@ export default function Home() {
           </Typography>
         </Box>
       ) : null}
-      <Box sx={{ height: 32 }} />
-      {rounds != null && !loading && rounds?.length > 0 ? (
-        <BarChart
-          sx={{ padding: 1 }}
-          width="1200"
-          height="800"
-          xAxis={[
-            {
-              scaleType: "band",
-              data: rounds[0].candidateVoteCounts.map((e) => {
-                return `${e.candidate.candidateName} (${e.candidate.candidateParty})`;
-              }),
-            },
-          ]}
-          series={rounds.map((round) => {
-            return {
-              stack: "total",
-              data: round.candidateVoteCounts.map((e) => e.voteCount),
-            };
-          })}
-        />
-      ) : null}
+
       <Snackbar
         open={errorSnackbarOpen}
         autoHideDuration={10000}
