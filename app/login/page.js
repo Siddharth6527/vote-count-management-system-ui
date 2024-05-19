@@ -157,7 +157,11 @@ export default function Login() {
                     },
                   });
                   if (response.status === 200) {
-                    router.replace("/");
+                    if (user == "admin") {
+                      router.replace("/");
+                    } else {
+                      router.replace("/rounds/");
+                    }
                     setCredentials({ user, password });
                   } else if (response.status == 401) {
                     setSnackbarMessage("Unauthorized");

@@ -21,6 +21,12 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionActions from "@mui/material/AccordionActions";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 import CandidateImage from "../component/CandidateImage";
 import { API_ROUNDS_URL } from "../utils/api";
 import {
@@ -143,37 +149,47 @@ export default function Home() {
           </Select>{" "}
         </FormControl>
       </Box> */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
+      {!loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
 
-          flexWrap: "wrap",
-        }}
-      >
-        {Array.from(Array(20).keys()).map((i) => {
-          return (
-            <React.Fragment>
-              <div
-                onClick={() => {
-                  setROUNDID(i + 1);
-                }}
-              >
-                <Avatar
-                  sx={{
-                    bgcolor: ROUNDID == i + 1 ? blue[800] : blue[200],
-                    marginTop: 2,
+            flexWrap: "wrap",
+          }}
+        >
+          {Array.from(Array(20).keys()).map((i) => {
+            return (
+              <React.Fragment>
+                <div
+                  onClick={() => {
+                    setROUNDID(i + 1);
                   }}
                 >
-                  {i + 1}
-                </Avatar>
-              </div>{" "}
-              <Box sx={{ width: "16px" }} />
-            </React.Fragment>
-          );
-        })}
-      </Box>
-      <Box sx={{ height: "16px" }} />
+                  <Avatar
+                    sx={{
+                      bgcolor: ROUNDID == i + 1 ? blue[800] : blue[200],
+                      marginTop: 2,
+                    }}
+                  >
+                    {i + 1}
+                  </Avatar>
+                </div>{" "}
+                <Box sx={{ width: "16px" }} />
+              </React.Fragment>
+            );
+          })}
+        </Box>
+      ) : null}
+      {!loading
+        ? [
+            <Box sx={{ height: "16px" }} />,
+            <Typography variant="h6" component="div">
+              Round {ROUNDID}
+            </Typography>,
+            <Box sx={{ height: "16px" }} />,
+          ]
+        : null}
       {}
       {loading ? (
         <Box
@@ -289,6 +305,8 @@ export default function Home() {
                 enableFilters={false}
                 enableHiding={false}
                 enableFullScreenToggle={false}
+                enableTopToolbar={false}
+                enableBottomToolbar={false}
                 enableColumnActions={false}
                 muiTableHeadCellProps={{
                   whiteSpace: "nowrap",

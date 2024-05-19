@@ -21,98 +21,22 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
-import CandidateImage from "../../component/CandidateImage";
-import { API_ROUNDS_URL } from "../../utils/api";
+import Accordion from "@mui/material/Accordion";
+import AccordionActions from "@mui/material/AccordionActions";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+import CandidateImage from "../component/CandidateImage";
+import { API_ROUNDS_URL } from "../utils/api";
 import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
 import { blue } from "@mui/material/colors";
 
-import { useRouter } from "next/router";
-
-export async function generateStaticParams() {
-  return [
-    "Lalkuan",
-    "Bhimtal",
-    "Nainital",
-    "Haldwani",
-    "Kaladhungi",
-    "Jaspur",
-    "Kashipur",
-    "Bajpur",
-    "Gadarpur",
-    "Rudrapur",
-    "Kiccha",
-    "Sitarganj",
-    "Nanakmatta",
-    "Khatima",
-  ];
-}
-
-export default function Home() {
-  const [sort, setSort] = useState("candidateId");
-  const [order, setOrder] = useState("asc");
-  const [table, setTable] = useState(null);
-
+export default function ConstituencyAccordionContent({ rounds, constituency }) {
   const [ROUNDID, setROUNDID] = useState(1);
-
-  const router = useRouter();
-
-  const [loading, setLoading] = useState(false);
-  const [rounds, setRounds] = useState(null);
-  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
-
-  const fetchRounds = async (indicateLoading = true) => {
-    if (indicateLoading) {
-      setLoading(true);
-    }
-
-    console.log("Fetching rounds...");
-
-    try {
-      console.log(API_ROUNDS_URL + `?orderBy=${sort}&asc=${order == "asc"}`);
-      const response = await fetch(
-        API_ROUNDS_URL + `?orderBy=${sort}&asc=${order == "asc"}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await response.json();
-      if (response.status == 200) {
-        console.log(data);
-        setRounds(data);
-      } else {
-        throw new Error();
-      }
-    } catch (e) {
-      console.log(e);
-      setErrorSnackbarOpen(true);
-      setTimeout(() => setErrorSnackbarOpen(false), 10000);
-    }
-    if (indicateLoading) {
-      setLoading(false);
-    }
-  };
-
-  const [time, setTime] = useState(0);
-  useEffect(() => {
-    fetchRounds(false);
-
-    const timer = setTimeout(() => {
-      setTime(time + 1);
-    }, 10000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [time]);
-
-  useEffect(() => {
-    fetchRounds();
-  }, [sort, order]);
 
   return (
     <Box
@@ -197,23 +121,15 @@ export default function Home() {
           );
         })}
       </Box>
-      <Box sx={{ height: "16px" }} />
-      {}
-      {loading ? (
-        <Box
-          sx={{
-            flex: 1,
-            width: "100%",
-            flexDirection: "row",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CircularProgress sx={{ width: "100%" }} />
-        </Box>
-      ) : null}
-      {rounds != null && !loading && rounds?.length > 0
+      {[
+        <Box sx={{ height: "16px" }} />,
+        <Typography variant="h6" component="div">
+          Round {ROUNDID}
+        </Typography>,
+        <Box sx={{ height: "16px" }} />,
+      ]}
+
+      {rounds != null && rounds?.length > 0
         ? (() => {
             const columns = [
               {
@@ -259,8 +175,8 @@ export default function Home() {
                 let result = rounds
                   .filter(
                     (round) =>
-                      round.roundId < ROUNDID &&
-                      router.query.constituency == round.roundConstituency
+                      round.roundId == ROUNDID &&
+                      round.roundConstituency == constituency
                   )
                   .reduce((acc, round) => {
                     return acc + round.candidateVoteCounts[i].voteCount;
@@ -272,7 +188,7 @@ export default function Home() {
                 .filter(
                   (round) =>
                     round.roundId == ROUNDID &&
-                    router.query.constituency == round.roundConstituency
+                    round.roundConstituency == constituency
                 )
                 .reduce((acc, round) => {
                   return acc + round.candidateVoteCounts[i].voteCount;
@@ -321,6 +237,8 @@ export default function Home() {
                 enableFilters={false}
                 enableHiding={false}
                 enableFullScreenToggle={false}
+                enableTopToolbar={false}
+                enableBottomToolbar={false}
                 enableColumnActions={false}
                 muiTableHeadCellProps={{
                   whiteSpace: "nowrap",
@@ -334,7 +252,7 @@ export default function Home() {
             );
           })()
         : null}
-      {rounds?.length == 0 && !loading ? (
+      {rounds?.length == 0 ? (
         <Box
           sx={{
             flex: 1,
@@ -351,13 +269,6 @@ export default function Home() {
           </Typography>
         </Box>
       ) : null}
-
-      <Snackbar
-        open={errorSnackbarOpen}
-        autoHideDuration={10000}
-        onClose={() => setErrorSnackbarOpen(false)}
-        message={"Refresh: Failure"}
-      />
     </Box>
   );
 }
