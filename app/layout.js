@@ -181,7 +181,7 @@ export default function RootLayout({ children }) {
                       aria-label="open drawer"
                       edge="start"
                       onClick={handleDrawerToggle}
-                      sx={{ mr: 2, display: { md: "none" } }}
+                      sx={{ mr: 2, display: { xl: "none" } }}
                     >
                       <Menu />
                     </IconButton>
@@ -192,7 +192,7 @@ export default function RootLayout({ children }) {
                     >
                       Vote Count Management
                     </Typography>
-                    <Box sx={{ display: { xs: "none", md: "block" } }}>
+                    <Box sx={{ display: { xs: "none", xl: "block" } }}>
                       {(hasAdminCredentials()
                         ? primaryNavItemsAdmin
                         : hasCredentials()
@@ -216,7 +216,7 @@ export default function RootLayout({ children }) {
                       ))}
                     </Box>
                     <Box sx={{ flexGrow: 1 }} />
-                    <Box sx={{ display: { xs: "none", md: "block" } }}>
+                    <Box sx={{ display: { xs: "none", xl: "block" } }}>
                       {(hasCredentials()
                         ? secondaryNavItemsAuth
                         : secondaryNavItems
@@ -246,7 +246,7 @@ export default function RootLayout({ children }) {
                     onClose={handleDrawerToggle}
                     ModalProps={{ keepMounted: true }}
                     sx={{
-                      display: { xs: "block", md: "none" },
+                      display: { xs: "block", xl: "none" },
                       "& .MuiDrawer-paper": {
                         boxSizing: "border-box",
                         width: drawerWidth,

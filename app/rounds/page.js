@@ -236,74 +236,84 @@ export default function Rounds() {
               <TableBody>
                 {(() => {
                   try {
-                    return rounds.map((round) => {
-                      return (
-                        <React.Fragment
-                          key={`${round.roundId}-${round.roundDistrict}`}
-                        >
-                          {/* FOR SHOWING ROUNDS STATS */}
-                          <TableRow
-                            sx={{
-                              "*": { border: "unset" },
-                            }}
+                    return rounds
+                      .filter((round) => {
+                        if (getCredentials().user == "admin") return true;
+                        return (
+                          round.roundConstituency.toLowerCase() ==
+                          getCredentials().user
+                        );
+                      })
+                      .map((round) => {
+                        return (
+                          <React.Fragment
+                            key={`${round.roundId}-${round.roundDistrict}`}
                           >
-                            <TableCell size="small">{round.roundId}</TableCell>
-                            <TableCell>{round.roundDistrict}</TableCell>
-                            <TableCell>{round.roundConstituency}</TableCell>
-                            <TableCell
-                              size="small"
+                            {/* FOR SHOWING ROUNDS STATS */}
+                            <TableRow
                               sx={{
-                                display:
-                                  getCredentials().user ==
-                                    round.roundConstituency.toLowerCase() ||
-                                  getCredentials().user == "admin"
-                                    ? "auto"
-                                    : "none",
+                                "*": { border: "unset" },
                               }}
                             >
-                              <IconButton
-                                onClick={() => {
-                                  setDeleteDialogRound(round);
+                              <TableCell size="small">
+                                {round.roundId}
+                              </TableCell>
+                              <TableCell>{round.roundDistrict}</TableCell>
+                              <TableCell>{round.roundConstituency}</TableCell>
+                              <TableCell
+                                size="small"
+                                sx={{
+                                  display:
+                                    getCredentials().user ==
+                                      round.roundConstituency.toLowerCase() ||
+                                    getCredentials().user == "admin"
+                                      ? "auto"
+                                      : "none",
                                 }}
                               >
-                                <Delete />
-                              </IconButton>
-                            </TableCell>
-                          </TableRow>
-                          <TableCell colSpan={3}>
-                            {/* FOR SHOWING ROUND CHIPS */}
-                            <Box
-                              sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                alignItems: "center",
-                                flexWrap: "wrap",
-                              }}
-                            >
-                              {round.candidateVoteCounts.map((e) => (
-                                <Chip
-                                  sx={{
-                                    marginRight: 1,
-                                    marginBottom: 1,
-                                    paddingLeft: 1,
+                                <IconButton
+                                  onClick={() => {
+                                    setDeleteDialogRound(round);
                                   }}
-                                  avatar={
-                                    <CandidateImage
-                                      width={20}
-                                      height={20}
-                                      id={e.candidate.candidateId}
-                                    />
-                                  }
-                                  label={`${e.candidate.candidateName} : ${e.voteCount} votes`}
-                                  key={e.candidate.candidateId}
-                                />
-                              ))}
-                            </Box>
-                          </TableCell>
-                        </React.Fragment>
-                      );
-                    });
+                                >
+                                  <Delete />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                            <TableCell colSpan={3}>
+                              {/* FOR SHOWING ROUND CHIPS */}
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "flex-start",
+                                  alignItems: "center",
+                                  flexWrap: "wrap",
+                                }}
+                              >
+                                {round.candidateVoteCounts.map((e) => (
+                                  <Chip
+                                    sx={{
+                                      marginRight: 1,
+                                      marginBottom: 1,
+                                      paddingLeft: 1,
+                                    }}
+                                    avatar={
+                                      <CandidateImage
+                                        width={20}
+                                        height={20}
+                                        id={e.candidate.candidateId}
+                                      />
+                                    }
+                                    label={`${e.candidate.candidateName} : ${e.voteCount} votes`}
+                                    key={e.candidate.candidateId}
+                                  />
+                                ))}
+                              </Box>
+                            </TableCell>
+                          </React.Fragment>
+                        );
+                      });
                   } catch (e) {
                     console.log(e);
                     return null;

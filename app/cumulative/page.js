@@ -17,19 +17,23 @@ import {
   Card,
   TableHead,
   TableRow,
+  Avatar,
   Typography,
   Paper,
 } from "@mui/material";
-import CandidateImage from "./component/CandidateImage";
-import { API_ROUNDS_URL } from "./utils/api";
+import CandidateImage from "../component/CandidateImage";
+import { API_ROUNDS_URL } from "../utils/api";
 import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
+import { blue } from "@mui/material/colors";
 export default function Home() {
   const [sort, setSort] = useState("candidateId");
   const [order, setOrder] = useState("asc");
   const [table, setTable] = useState(null);
+
+  const [ROUNDID, setROUNDID] = useState(1);
 
   const [loading, setLoading] = useState(false);
   const [rounds, setRounds] = useState(null);
@@ -139,6 +143,38 @@ export default function Home() {
           </Select>{" "}
         </FormControl>
       </Box> */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+
+          flexWrap: "wrap",
+        }}
+      >
+        {Array.from(Array(20).keys()).map((i) => {
+          return (
+            <React.Fragment>
+              <div
+                onClick={() => {
+                  setROUNDID(i + 1);
+                }}
+              >
+                <Avatar
+                  sx={{
+                    bgcolor: ROUNDID == i + 1 ? blue[800] : blue[200],
+                    marginTop: 2,
+                  }}
+                >
+                  {i + 1}
+                </Avatar>
+              </div>{" "}
+              <Box sx={{ width: "16px" }} />
+            </React.Fragment>
+          );
+        })}
+      </Box>
+      <Box sx={{ height: "16px" }} />
+      {}
       {loading ? (
         <Box
           sx={{
@@ -168,22 +204,24 @@ export default function Home() {
                 header: "Candidate Name",
                 grow: true,
               },
-              ...rounds.map((round) => {
-                return {
-                  width: "auto",
-                  accessorKey: `round-${round.roundId}-${round.roundDistrict}-${round.roundConstituency}`,
-                  header: (
-                    <div>
-                      {`Round ${round.roundId}`}
-                      <br />
-                      {`${round.roundDistrict}`}
-                      <br />
-                      {`${round.roundConstituency}`}
-                    </div>
-                  ),
-                  grow: true,
-                };
-              }),
+              {
+                width: "auto",
+                accessorKey: "candidateParty",
+                header: "Candidate Party",
+                grow: true,
+              },
+              {
+                width: "auto",
+                accessorKey: "voteBroughtFromPreviousRounds",
+                header: "Vote Brought From Previous Rounds",
+                size: 400,
+              },
+              {
+                width: "auto",
+                accessorKey: "currentRound",
+                header: "Current Round",
+                size: 200,
+              },
               {
                 width: "auto",
                 accessorKey: "total",
@@ -193,6 +231,20 @@ export default function Home() {
             ];
             const data = [];
             for (let i = 0; i < rounds[0].candidateVoteCounts.length; i++) {
+              let voteBroughtFromPreviousRounds = (() => {
+                let result = rounds
+                  .filter((round) => round.roundId < ROUNDID)
+                  .reduce((acc, round) => {
+                    return acc + round.candidateVoteCounts[i].voteCount;
+                  }, 0);
+                console.log(result);
+                return result;
+              })();
+              let currentRound = rounds
+                .filter((round) => round.roundId == ROUNDID)
+                .reduce((acc, round) => {
+                  return acc + round.candidateVoteCounts[i].voteCount;
+                }, 0);
               let row = {
                 candidateImage: (
                   <CandidateImage
@@ -201,23 +253,15 @@ export default function Home() {
                     height={28}
                   />
                 ),
-                candidateName: (
-                  <div>
-                    {rounds[0].candidateVoteCounts[i].candidate.candidateName}
-                    <br />
-                    {rounds[0].candidateVoteCounts[i].candidate.candidateParty}
-                  </div>
-                ),
+                candidateName:
+                  rounds[0].candidateVoteCounts[i].candidate.candidateName,
+                candidateParty:
+                  rounds[0].candidateVoteCounts[i].candidate.candidateParty,
+                voteBroughtFromPreviousRounds,
+                currentRound,
+                total: voteBroughtFromPreviousRounds + currentRound,
               };
-              for (let j = 0; j < rounds.length; j++) {
-                row[
-                  `round-${rounds[j].roundId}-${rounds[j].roundDistrict}-${rounds[j].roundConstituency}`
-                ] = rounds[j].candidateVoteCounts[i].voteCount;
-              }
-              row.total = rounds.reduce(
-                (acc, round) => acc + round.candidateVoteCounts[i].voteCount,
-                0
-              );
+
               data.push(row);
             }
 
@@ -240,6 +284,11 @@ export default function Home() {
 
             return (
               <MaterialReactTable
+                enableDensityToggle={false}
+                enableSelectAll={false}
+                enableFilters={false}
+                enableHiding={false}
+                enableFullScreenToggle={false}
                 enableColumnActions={false}
                 muiTableHeadCellProps={{
                   whiteSpace: "nowrap",
@@ -249,12 +298,6 @@ export default function Home() {
                 enablePagination={false}
                 enableColumnPinning={true}
                 columns={columns}
-                initialState={{
-                  columnPinning: {
-                    left: ["candidateImage", "candidateName"],
-                    right: ["total"],
-                  },
-                }}
               />
             );
           })()
