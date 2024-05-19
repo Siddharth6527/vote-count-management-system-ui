@@ -19,6 +19,7 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
+import Tables from "./component/Tables/Tables";
 import { Grid } from "@mui/material";
 import Image from "next/image";
 import ActionAreaCard from "./component/Features/Card";
@@ -89,6 +90,7 @@ export default function Home() {
     }
   };
 
+  // LOGIC FOR AUTO-REFRESHING
   const [time, setTime] = useState(0);
   useEffect(() => {
     fetchRounds(false);
@@ -137,6 +139,12 @@ export default function Home() {
           // height={{ md: 800, lg: 600 }}
         />
       </Box>
+
+      {/* FOR TESTING PINNING COLUMNS */}
+      <Tables />
+      <Box height={50}></Box>
+
+      {/* TESTING ENDS HERE */}
 
       <Box sx={{ display: "flex", flexDirection: "row" }}>
         {/* FOR SORTING BUTTON */}
