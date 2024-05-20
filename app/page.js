@@ -254,7 +254,7 @@ export default function Home() {
       {/* FEATURES SECTION */}
       <Box margin="auto">
         <Typography
-          sx={{ typography: { xs: "h4", sm: "h4", md: "h2", lg: "h2" } }}
+          sx={{ typography: { xs: "h4", sm: "h3", md: "h2", lg: "h2" } }}
           variant="h2"
           gutterBottom
         >
@@ -268,14 +268,6 @@ export default function Home() {
         sx={{
           display: "flex",
           margin: "auto",
-          // flexDirection: {
-          //   xs: "column", // default for extra-small screens
-          //   sm: "row", // small screens
-          //   md: "column", // medium screens
-          //   lg: "row", // large screens
-          // },
-          // flexDirection: "column",
-          // flexDirection: "column",
           flexDirection: { xs: "column", sm: "column", md: "row" },
           justifyContent: "center",
           gap: "10%",

@@ -10,6 +10,8 @@ import {
   PersonOutlined,
   ScheduleOutlined,
 } from "@mui/icons-material";
+import EleCountLogo from "../public/EleCountLogo.jpg";
+import Image from "next/image";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -39,6 +41,7 @@ import {
   _getCredentials,
   _setCredentials,
 } from "./utils/auth";
+// import { Image } from "next/image";
 
 const theme = createTheme({
   // palette: {
@@ -185,12 +188,19 @@ export default function RootLayout({ children }) {
                     >
                       <Menu />
                     </IconButton>
+                    {/* <Box>
+                      <Image
+                        src={EleCountLogo}
+                        alt={"elecount-logo"}
+                        height={40}
+                      ></Image>
+                    </Box> */}
                     <Typography
                       variant="h6"
                       component="div"
                       sx={{ paddingRight: "56px" }}
                     >
-                      Vote Count Management
+                      The EleCount
                     </Typography>
                     <Box sx={{ display: { xs: "none", xl: "block" } }}>
                       {(hasAdminCredentials()
