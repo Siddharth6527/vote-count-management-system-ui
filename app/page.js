@@ -3,29 +3,28 @@
 import React, { useState, useEffect, useMemo } from "react";
 import {
   Box,
-  FormControl,
-  InputLabel,
-  Select,
   CircularProgress,
-  MenuItem,
   Snackbar,
-  Chip,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  Card,
-  TableHead,
-  TableRow,
   Typography,
   Paper,
 } from "@mui/material";
 import CandidateImage from "./component/CandidateImage";
 import { API_ROUNDS_URL } from "./utils/api";
+import Image from "next/image";
+import EleCountImg from "../public/EleCountEdited.jpg";
+import Aim from "./component/Aim/Aim";
+import FeaturesCard from "./component/Features/Card";
+import Features from "./textData/Features.json";
+// importing images
+import RealTimeImg from "../public/realtime.jpg";
+import AutomationImg from "../public/automationVector.jpg";
+import SafeAndSecureImg from "../public/ss.jpg";
+
 import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
+import { FiberPin } from "@mui/icons-material";
 export default function Home() {
   const [sort, setSort] = useState("candidateId");
   const [order, setOrder] = useState("asc");
@@ -100,45 +99,16 @@ export default function Home() {
         alignItems: "stretch",
       }}
     >
-      {/* <Box sx={{ height: 16 }} />
-      <Box sx={{ display: "flex", flexDirection: "row" }}>
-        <FormControl>
-          <InputLabel id="sort-label">Sort</InputLabel>
-          <Select
-            id="sort-select"
-            labelId="sort-label"
-            value={sort}
-            variant="outlined"
-            label="Sort"
-            onChange={(e) => {
-              setSort(e.target.value);
-            }}
-          >
-            <MenuItem value={"candidateId"}>Default</MenuItem>
-            <MenuItem value={"candidateName"}>Candidate Name</MenuItem>
-            <MenuItem value={"candidateParty"}>Candidate Party</MenuItem>
-            <MenuItem value={"voteCount"}>Vote Count</MenuItem>
-          </Select>{" "}
-        </FormControl>
+      <Box maxWidth={700} margin={"auto"}>
+        <Image
+          src={EleCountImg}
+          alt={"EleCount-Image"}
+          width={600}
+          layout={"responsive"}
+        />
+      </Box>
+      <Box height={50} />
 
-        <Box sx={{ width: 16 }} />
-        <FormControl>
-          <InputLabel id="order-label">Order</InputLabel>
-          <Select
-            id="order-select"
-            labelId="order-label"
-            value={order}
-            variant="outlined"
-            label="Order"
-            onChange={(e) => {
-              setOrder(e.target.value);
-            }}
-          >
-            <MenuItem value={"asc"}>Ascending</MenuItem>
-            <MenuItem value={"desc"}>Descending</MenuItem>
-          </Select>{" "}
-        </FormControl>
-      </Box> */}
       {loading ? (
         <Box
           sx={{
@@ -276,6 +246,57 @@ export default function Home() {
           </Typography>
         </Box>
       ) : null}
+
+      {/* AIM SECTION */}
+      <Aim />
+      <Box height={100} />
+      {/* FEATURES SECTION */}
+      <Box margin="auto">
+        <Typography
+          sx={{ typography: { xs: "h4", sm: "h4", md: "h2", lg: "h2" } }}
+          variant="h2"
+          gutterBottom
+        >
+          Features of EleCount
+        </Typography>
+      </Box>
+
+      <Box height={50} />
+
+      <Box
+        sx={{
+          display: "flex",
+          margin: "auto",
+          // flexDirection: {
+          //   xs: "column", // default for extra-small screens
+          //   sm: "row", // small screens
+          //   md: "column", // medium screens
+          //   lg: "row", // large screens
+          // },
+          // flexDirection: "column",
+          // flexDirection: "column",
+          flexDirection: { xs: "column", sm: "column", md: "row" },
+          justifyContent: "center",
+          gap: "10%",
+          padding: "2%",
+        }}
+      >
+        <FeaturesCard
+          heading={Features.feature1.heading}
+          text={Features.feature1.text}
+          image={RealTimeImg}
+        />
+        <FeaturesCard
+          heading={Features.feature2.heading}
+          text={Features.feature2.text}
+          image={AutomationImg}
+        />
+        <FeaturesCard
+          heading={Features.feature3.heading}
+          text={Features.feature3.text}
+          image={SafeAndSecureImg}
+        />
+      </Box>
 
       <Snackbar
         open={errorSnackbarOpen}

@@ -1,0 +1,14 @@
+{
+  "feature1": {
+    "heading": "Real-Time Data",
+    "text": "Real-time updates deliver instant information, keeping users informed without delay. They enhance engagement and decision-making by ensuring access to the latest data across platforms. It provides immediate insights and updates by being continuously collected, processed, and delivered without significant delay."
+  },
+  "feature2": {
+    "heading": "Automated Application",
+    "text": "Automated application software performs tasks with minimal human intervention using pre-defined rules and algorithms, enhancing efficiency and reducing errors. It revolutionizes productivity, transforming both everyday tasks and complex operations across diverse industries."
+  },
+  "feature3": {
+    "heading": "Safe and Secure",
+    "text": "Safe software operates without causing unintended harm or adverse effects, ensuring user safety and system stability. Secure software protects against unauthorized access and malicious attacks, maintaining confidentiality, integrity, and availability of data."
+  }
+}
