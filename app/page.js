@@ -8,6 +8,7 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
+import Footer from "./component/Footer/page";
 import CandidateImage from "./component/CandidateImage";
 import { API_ROUNDS_URL } from "./utils/api";
 import Image from "next/image";
@@ -297,6 +298,11 @@ export default function Home() {
           image={SafeAndSecureImg}
         />
       </Box>
+
+      <Box height={100} />
+      {/* FOOTER SECTION */}
+      <Footer />
+      {/* SNACK BAR */}
 
       <Snackbar
         open={errorSnackbarOpen}
