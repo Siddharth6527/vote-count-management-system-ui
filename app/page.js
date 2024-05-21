@@ -25,8 +25,32 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
-import { FiberPin } from "@mui/icons-material";
+import { FiberPin, WindowSharp } from "@mui/icons-material";
+
 export default function Home() {
+  // code for innerwidth
+  // const [windowDimension, detectHW] = useState({
+  //   winWidth: window.innerWidth,
+  //   winHeight: window.innerHeight,
+  // });
+
+  // const detectSize = () => {
+  //   detectHW({
+  //     winWidth: window.innerWidth,
+  //     winHeight: window.innerHeight,
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   detectSize();
+  //   // window.addEventListener("resize", detectSize);
+  //   // return () => {
+  //   // window.removeEventListener("resize", detectSize);
+  //   // };
+  // }, [windowDimension]);
+
+  // ///////////
+
   const [sort, setSort] = useState("candidateId");
   const [order, setOrder] = useState("asc");
   const [table, setTable] = useState(null);
@@ -220,11 +244,23 @@ export default function Home() {
                 enablePagination={false}
                 enableColumnPinning={true}
                 columns={columns}
-                // ------------ SWITCHED OFF AUTO-PINNING
+                // ------------ SWITCHED ON AUTO-PINNING AGAIN
+                initialState={{
+                  columnPinning: {
+                    left: ["candidateImage", "candidateName"],
+                    right: ["total"],
+                  },
+                }}
+
                 // initialState={{
                 //   columnPinning: {
-                //     left: ["candidateImage", "candidateName"],
-                //     right: ["total"],
+                //     left:
+                //       windowDimension.winWidth >= "600px"
+                //         ? ["candidateImage", "candidateName"]
+                //         : null,
+                //     right: windowDimension.winWidth >= "600px" ? "total" : null,
+                //     // left: { lg: ["candidateImage", "candidateName"] },
+                //     // right: { md: ["total"] },
                 //   },
                 // }}
               />
