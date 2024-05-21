@@ -262,6 +262,8 @@ export default function Home() {
                   return acc + round.candidateVoteCounts[i].voteCount;
                 }, 0);
               let row = {
+                candidateId:
+                  rounds[0].candidateVoteCounts[i].candidate.candidateId,
                 candidateImage: (
                   <CandidateImage
                     id={rounds[0].candidateVoteCounts[i].candidate.candidateId}
@@ -314,7 +316,8 @@ export default function Home() {
                 }}
                 data={data}
                 enablePagination={false}
-                enableColumnPinning={true}
+                // enableColumnPinning={true}
+                enableColumnPinning={false}
                 columns={columns}
               />
             );
