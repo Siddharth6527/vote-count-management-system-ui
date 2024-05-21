@@ -220,12 +220,13 @@ export default function Home() {
                 enablePagination={false}
                 enableColumnPinning={true}
                 columns={columns}
-                initialState={{
-                  columnPinning: {
-                    left: ["candidateImage", "candidateName"],
-                    right: ["total"],
-                  },
-                }}
+                // ------------ SWITCHED OFF AUTO-PINNING
+                // initialState={{
+                //   columnPinning: {
+                //     left: ["candidateImage", "candidateName"],
+                //     right: ["total"],
+                //   },
+                // }}
               />
             );
           })()

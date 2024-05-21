@@ -310,14 +310,14 @@ export default function Home() {
                 enableTopToolbar={false}
                 enableBottomToolbar={false}
                 enableColumnActions={false}
+                // enableColumnActions={true}
                 muiTableHeadCellProps={{
                   whiteSpace: "nowrap",
                   maxLines: 3,
                 }}
                 data={data}
                 enablePagination={false}
-                // enableColumnPinning={true}
-                enableColumnPinning={false}
+                enableColumnPinning={true}
                 columns={columns}
               />
             );
