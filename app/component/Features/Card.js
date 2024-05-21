@@ -14,7 +14,7 @@ export default function FeaturesCard(props) {
         alt="testing"
         width={400}
         layout="responsive"
-        loading="lazy"
+        // loading="lazy"
       ></Image>
       {/* height = 140 */}
       <CardContent
