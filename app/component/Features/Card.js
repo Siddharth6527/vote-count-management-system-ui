@@ -8,14 +8,14 @@ import { Box } from "@mui/material";
 export default function FeaturesCard(props) {
   return (
     // default maxwidth 345
-    <Card sx={{ maxWidth: 400, marginBottom: 5 }}>
-      <Image
-        src={props.image}
-        alt="testing"
-        width={400}
-        layout="responsive"
-        // loading="lazy"
-      ></Image>
+    <Card
+      sx={{
+        width: { sm: 300, md: 345, lg: 400 },
+        heigth: 200,
+        marginBottom: 5,
+      }}
+    >
+      <Image src={props.image} alt="testing" layout="responsive"></Image>
       {/* height = 140 */}
       <CardContent
         sx={{

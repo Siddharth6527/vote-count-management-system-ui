@@ -1,23 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    loader: "default",
-    disableStaticImages: false,
-    // remotePatterns: [
-    //   {
-    //     protocol: "https",
-    //     hostname: "vote-count-management-system-ui.onrender.com",
-    //     port: "",
-    //     pathname: "./public/**",
-    //   },
-    // ],
-    // unoptimized: true,
-    // domains: ["https://vote-count-management-system-ui.onrender.com"],
+    unoptimized: true,
   },
-  // output: "export",
-  // eslint: {
-  //   ignoreDuringBuilds: true,
-  // },
+  output: "export",
 };
 
 export default nextConfig;

@@ -18,8 +18,8 @@ import FeaturesCard from "./component/Features/Card";
 import Features from "./textData/Features.json";
 // importing images
 import RealTimeImg from "../public/realtime.jpg";
-import AutomationImg from "../public/automationVector.jpg";
-import SafeAndSecureImg from "../public/ss.jpg";
+import AutomationImg from "../public/automationVector-min.jpg";
+import SafeAndSecureImg from "../public/ss-min.jpg";
 
 import {
   MaterialReactTable,
@@ -28,29 +28,6 @@ import {
 import { FiberPin, WindowSharp } from "@mui/icons-material";
 
 export default function Home() {
-  // code for innerwidth
-  // const [windowDimension, detectHW] = useState({
-  //   winWidth: window.innerWidth,
-  //   winHeight: window.innerHeight,
-  // });
-
-  // const detectSize = () => {
-  //   detectHW({
-  //     winWidth: window.innerWidth,
-  //     winHeight: window.innerHeight,
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   detectSize();
-  //   // window.addEventListener("resize", detectSize);
-  //   // return () => {
-  //   // window.removeEventListener("resize", detectSize);
-  //   // };
-  // }, [windowDimension]);
-
-  // ///////////
-
   const [sort, setSort] = useState("candidateId");
   const [order, setOrder] = useState("asc");
   const [table, setTable] = useState(null);
@@ -216,22 +193,8 @@ export default function Home() {
               data.push(row);
             }
 
-            console.log(data);
-            console.log(columns);
-
-            // const table = useMaterialReactTable({
-            //   enableColumnPinning: true,
-            //   layoutMode: "grid-no-grow",
-            //   data: data,
-            //   columns: columns,
-
-            //   initialState: {
-            //     columnPinning: {
-            //       left: ["candidateImage", "candidateName"],
-            //       right: ["total"],
-            //     },
-            //   },
-            // });
+            // console.log(data);
+            // console.log(columns);
 
             return (
               <MaterialReactTable
@@ -244,25 +207,16 @@ export default function Home() {
                 enablePagination={false}
                 enableColumnPinning={true}
                 columns={columns}
-                // ------------ SWITCHED ON AUTO-PINNING AGAIN
+                // ------------ SWITCHED OFF AUTO-PINNING ONLY FOR MOBILES
                 initialState={{
-                  columnPinning: {
-                    left: ["candidateImage", "candidateName"],
-                    right: ["total"],
-                  },
+                  columnPinning:
+                    window.innerWidth > 600
+                      ? {
+                          left: ["candidateImage", "candidateName"],
+                          right: ["total"],
+                        }
+                      : "",
                 }}
-
-                // initialState={{
-                //   columnPinning: {
-                //     left:
-                //       windowDimension.winWidth >= "600px"
-                //         ? ["candidateImage", "candidateName"]
-                //         : null,
-                //     right: windowDimension.winWidth >= "600px" ? "total" : null,
-                //     // left: { lg: ["candidateImage", "candidateName"] },
-                //     // right: { md: ["total"] },
-                //   },
-                // }}
               />
             );
           })()

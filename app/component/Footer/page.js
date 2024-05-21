@@ -40,6 +40,9 @@ export default function page() {
             sx={{ typography: { xs: "h5", sm: "h4", lg: "h2" } }}
             variant="h3"
             color="#FFE5B4"
+            paddingLeft={2}
+            paddingRight={2}
+            align={"center"}
           >
             Department Of Information Technology,{" "}
           </Typography>
@@ -47,6 +50,7 @@ export default function page() {
             sx={{ typography: { xs: "h6", sm: "h5" } }}
             variant="h4"
             color="#FFE5B4"
+            align={"center"}
           >
             College of Technology, GBPUAT Pantnagar
           </Typography>
