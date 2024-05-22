@@ -10,7 +10,7 @@ import {
   PersonOutlined,
   ScheduleOutlined,
 } from "@mui/icons-material";
-import EleCountLogo from "../public/EleCountLogo.jpg";
+import EleCountLogo from "../public/EleCountLogo-min.jpg";
 import Image from "next/image";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -188,19 +188,19 @@ export default function RootLayout({ children }) {
                     >
                       <Menu />
                     </IconButton>
-                    {/* <Box>
+                    <Box>
                       <Image
                         src={EleCountLogo}
                         alt={"elecount-logo"}
                         height={40}
                       ></Image>
-                    </Box> */}
+                    </Box>
                     <Typography
                       variant="h6"
                       component="div"
                       sx={{ paddingRight: "56px" }}
                     >
-                      The EleCount
+                      EleCount
                     </Typography>
                     <Box sx={{ display: { xs: "none", xl: "block" } }}>
                       {(hasAdminCredentials()
