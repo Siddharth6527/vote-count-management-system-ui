@@ -33,10 +33,22 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
-import { blue } from "@mui/material/colors";
+import { blue, deepOrange } from "@mui/material/colors";
 
 export default function ConstituencyAccordionContent({ rounds, constituency }) {
   const [ROUNDID, setROUNDID] = useState(1);
+  // LOGIC FOR COLORED:
+  // make a set
+  let set = new Set();
+  // Iterate through the rounds
+  if (rounds != null && rounds.length != 0) {
+    rounds.forEach((curr) => {
+      if (curr.roundConstituency == constituency) {
+        set.add(curr.roundId);
+      }
+    });
+  }
+  // and add rounds of that particular constituency only
 
   return (
     <Box
@@ -52,45 +64,78 @@ export default function ConstituencyAccordionContent({ rounds, constituency }) {
         alignItems: "stretch",
       }}
     >
-      {/* <Box sx={{ height: 16 }} />
-      <Box sx={{ display: "flex", flexDirection: "row" }}>
-        <FormControl>
-          <InputLabel id="sort-label">Sort</InputLabel>
-          <Select
-            id="sort-select"
-            labelId="sort-label"
-            value={sort}
-            variant="outlined"
-            label="Sort"
-            onChange={(e) => {
-              setSort(e.target.value);
+      {/* FOR COLOUR DETAILS */}
+      {/* PARENT CONTAINER */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: { xs: "flex-start", md: "center" },
+          flexDirection: { xs: "column", md: "row", lg: "row" },
+          justifyContent: "center",
+          gap: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Avatar
+            sx={{
+              bgcolor: "#51cf66",
+              marginRight: 1,
             }}
           >
-            <MenuItem value={"candidateId"}>Default</MenuItem>
-            <MenuItem value={"candidateName"}>Candidate Name</MenuItem>
-            <MenuItem value={"candidateParty"}>Candidate Party</MenuItem>
-            <MenuItem value={"voteCount"}>Vote Count</MenuItem>
-          </Select>{" "}
-        </FormControl>
+            {"A"}
+          </Avatar>
+          <Typography variant="body1" color="initial">
+            : Round Available
+          </Typography>
+        </Box>
 
-        <Box sx={{ width: 16 }} />
-        <FormControl>
-          <InputLabel id="order-label">Order</InputLabel>
-          <Select
-            id="order-select"
-            labelId="order-label"
-            value={order}
-            variant="outlined"
-            label="Order"
-            onChange={(e) => {
-              setOrder(e.target.value);
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Avatar
+            sx={{
+              bgcolor: "#fcc419",
+              marginRight: 1,
             }}
           >
-            <MenuItem value={"asc"}>Ascending</MenuItem>
-            <MenuItem value={"desc"}>Descending</MenuItem>
-          </Select>{" "}
-        </FormControl>
-      </Box> */}
+            {"B"}
+          </Avatar>
+          <Typography variant="body1" color="initial">
+            : Round Not Available
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Avatar
+            sx={{
+              bgcolor: blue[800],
+              marginRight: 1,
+            }}
+          >
+            {"C"}
+          </Avatar>
+          <Typography variant="body1" color="initial">
+            : Selected Round
+          </Typography>
+        </Box>
+        <Box />
+      </Box>
+      {/* BUTTONS SECTION ENDS  */}
       <Box
         sx={{
           display: "flex",
@@ -109,7 +154,13 @@ export default function ConstituencyAccordionContent({ rounds, constituency }) {
               >
                 <Avatar
                   sx={{
-                    bgcolor: ROUNDID == i + 1 ? blue[800] : blue[200],
+                    // bgcolor: set.has(i + 1) ? "#51cf66" : "#fcc419",
+                    bgcolor:
+                      ROUNDID == i + 1
+                        ? blue[800]
+                        : set.has(i + 1)
+                        ? "#51cf66"
+                        : "#fcc419",
                     marginTop: 2,
                   }}
                 >
