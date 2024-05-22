@@ -72,6 +72,7 @@ export default function ConstituencyAccordionContent({ rounds, constituency }) {
           alignItems: { xs: "flex-start", md: "center" },
           flexDirection: { xs: "column", md: "row", lg: "row" },
           justifyContent: "center",
+          mb: 2,
           gap: 2,
         }}
       >
@@ -140,7 +141,8 @@ export default function ConstituencyAccordionContent({ rounds, constituency }) {
         sx={{
           display: "flex",
           flexDirection: "row",
-
+          justifyContent: "center",
+          mb: 2,
           flexWrap: "wrap",
         }}
       >

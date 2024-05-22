@@ -120,12 +120,88 @@ export default function Home() {
         alignItems: "stretch",
       }}
     >
+      {/* FOR COLOUR DETAILS */}
+      {/* PARENT CONTAINER */}
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: { xs: "flex-start", md: "center" },
+          flexDirection: { xs: "column", md: "row", lg: "row" },
+          justifyContent: "center",
+          gap: 2,
+          mt: 2,
+          mb: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Avatar
+            sx={{
+              bgcolor: "#51cf66",
+              marginRight: 1,
+            }}
+          >
+            {"A"}
+          </Avatar>
+          <Typography variant="body1" color="initial">
+            : Round Available
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Avatar
+            sx={{
+              bgcolor: "#fcc419",
+              marginRight: 1,
+            }}
+          >
+            {"B"}
+          </Avatar>
+          <Typography variant="body1" color="initial">
+            : Round Not Available
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Avatar
+            sx={{
+              bgcolor: blue[800],
+              marginRight: 1,
+            }}
+          >
+            {"C"}
+          </Avatar>
+          <Typography variant="body1" color="initial">
+            : Selected Round
+          </Typography>
+        </Box>
+        <Box />
+      </Box>
+      {/* BUTTONS SECTION ENDS  */}
       {!loading ? (
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
-
+            mb: 2,
+            justifyContent: "center",
             flexWrap: "wrap",
           }}
         >
