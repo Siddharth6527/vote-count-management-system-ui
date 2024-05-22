@@ -175,7 +175,7 @@ export default function ConstituencyAccordionContent({ rounds, constituency }) {
                 let result = rounds
                   .filter(
                     (round) =>
-                      round.roundId == ROUNDID &&
+                      round.roundId < ROUNDID &&
                       round.roundConstituency == constituency
                   )
                   .reduce((acc, round) => {
