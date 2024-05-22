@@ -267,20 +267,6 @@ export default function ConstituencyAccordionContent({ rounds, constituency }) {
             console.log(data);
             console.log(columns);
 
-            // const table = useMaterialReactTable({
-            //   enableColumnPinning: true,
-            //   layoutMode: "grid-no-grow",
-            //   data: data,
-            //   columns: columns,
-
-            //   initialState: {
-            //     columnPinning: {
-            //       left: ["candidateImage", "candidateName"],
-            //       right: ["total"],
-            //     },
-            //   },
-            // });
-
             return (
               <MaterialReactTable
                 enableDensityToggle={false}

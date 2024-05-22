@@ -80,6 +80,16 @@ export default function Home() {
     }
   };
 
+  //  LOGIC FOR ROUNDS COLOURING
+  let set = new Set();
+  // Iterate through the rounds
+  if (rounds != null && rounds.length != 0) {
+    rounds.forEach((curr) => {
+      set.add(curr.roundId);
+    });
+  }
+  //
+
   const [time, setTime] = useState(0);
   useEffect(() => {
     fetchRounds(false);
@@ -110,45 +120,6 @@ export default function Home() {
         alignItems: "stretch",
       }}
     >
-      {/* <Box sx={{ height: 16 }} />
-      <Box sx={{ display: "flex", flexDirection: "row" }}>
-        <FormControl>
-          <InputLabel id="sort-label">Sort</InputLabel>
-          <Select
-            id="sort-select"
-            labelId="sort-label"
-            value={sort}
-            variant="outlined"
-            label="Sort"
-            onChange={(e) => {
-              setSort(e.target.value);
-            }}
-          >
-            <MenuItem value={"candidateId"}>Default</MenuItem>
-            <MenuItem value={"candidateName"}>Candidate Name</MenuItem>
-            <MenuItem value={"candidateParty"}>Candidate Party</MenuItem>
-            <MenuItem value={"voteCount"}>Vote Count</MenuItem>
-          </Select>{" "}
-        </FormControl>
-
-        <Box sx={{ width: 16 }} />
-        <FormControl>
-          <InputLabel id="order-label">Order</InputLabel>
-          <Select
-            id="order-select"
-            labelId="order-label"
-            value={order}
-            variant="outlined"
-            label="Order"
-            onChange={(e) => {
-              setOrder(e.target.value);
-            }}
-          >
-            <MenuItem value={"asc"}>Ascending</MenuItem>
-            <MenuItem value={"desc"}>Descending</MenuItem>
-          </Select>{" "}
-        </FormControl>
-      </Box> */}
       {!loading ? (
         <Box
           sx={{
@@ -168,7 +139,13 @@ export default function Home() {
                 >
                   <Avatar
                     sx={{
-                      bgcolor: ROUNDID == i + 1 ? blue[800] : blue[200],
+                      // bgcolor: ROUNDID == i + 1 ? blue[800] : blue[200],
+                      bgcolor:
+                        ROUNDID == i + 1
+                          ? blue[800]
+                          : set.has(i + 1)
+                          ? "#51cf66"
+                          : "#fcc419",
                       marginTop: 2,
                     }}
                   >
@@ -285,20 +262,6 @@ export default function Home() {
 
             console.log(data);
             console.log(columns);
-
-            // const table = useMaterialReactTable({
-            //   enableColumnPinning: true,
-            //   layoutMode: "grid-no-grow",
-            //   data: data,
-            //   columns: columns,
-
-            //   initialState: {
-            //     columnPinning: {
-            //       left: ["candidateImage", "candidateName"],
-            //       right: ["total"],
-            //     },
-            //   },
-            // });
 
             return (
               <MaterialReactTable
