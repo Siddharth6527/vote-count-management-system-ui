@@ -44,6 +44,14 @@ import {
 // import { Image } from "next/image";
 
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#597cff",
+      // light: "#ff5733",
+      // dark: "#ff5733",
+      // contrastText: "#fff",
+    },
+  },
   // palette: {
   //   primary: {
   //     main: "#ff5733",

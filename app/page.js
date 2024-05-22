@@ -7,6 +7,7 @@ import {
   Snackbar,
   Typography,
   Paper,
+  backdropClasses,
 } from "@mui/material";
 import Footer from "./component/Footer/page";
 import CandidateImage from "./component/CandidateImage";
@@ -132,7 +133,8 @@ export default function Home() {
                 width: "100",
                 accessorKey: "candidateImage",
                 header: "",
-                size: 100,
+                size: 50,
+                // backgroundColor: "#d3f9d8",
               },
               {
                 width: "auto",
@@ -144,6 +146,8 @@ export default function Home() {
                 return {
                   width: "auto",
                   accessorKey: `round-${round.roundId}-${round.roundDistrict}-${round.roundConstituency}`,
+                  // CHANGED HERE
+                  size: 50,
                   header: (
                     <div>
                       {`Round ${round.roundId}`}
@@ -160,7 +164,7 @@ export default function Home() {
                 width: "auto",
                 accessorKey: "total",
                 header: "Total",
-                size: 200,
+                size: 100, // CHANGED HERE
               },
             ];
             const data = [];
@@ -206,6 +210,7 @@ export default function Home() {
                 data={data}
                 enablePagination={false}
                 enableColumnPinning={true}
+                // muiTableBodyProps={sx=}
                 columns={columns}
                 // ------------ SWITCHED OFF AUTO-PINNING ONLY FOR MOBILES
                 initialState={{
