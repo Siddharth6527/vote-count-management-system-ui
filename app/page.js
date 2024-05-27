@@ -13,7 +13,7 @@ import Footer from "./component/Footer/page";
 import CandidateImage from "./component/CandidateImage";
 import { API_ROUNDS_URL } from "./utils/api";
 import Image from "next/image";
-import EleCountImg from "../public/EleCountEdited.jpg";
+import EleCountImg from "../public/croppedElecountImg.jpg";
 import Aim from "./component/Aim/Aim";
 import FeaturesCard from "./component/Features/Card";
 import Features from "./textData/Features.json";
